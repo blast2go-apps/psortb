@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.biobam.b2gapps.psortb.feature"
+      label="PSORTb"
+      version="1.0.0.qualifier"
+      provider-name="BIOBAM"
+      plugin="com.biobam.b2gapps.psortb">
+
+   <description url="http://www.example.com/description">
+      This App is based on the PSORTb 3.0, a prediction tool for bacterial protein subcellular localization predictions.
+This App is based on the &lt;b&gt;PSORTb 3.0&lt;/b&gt;, a prediction tool for bacterial protein subcellular localization predictions.
+If you use this tool for your research please cite: 
+PSORTb 3.0: improved protein subcellular localization prediction
+with refined localization subcategories and predictive capabilities
+for all prokaryotes. 
+N.Y. Yu, J.R. Wagner, M.R. Laird, G. Melli, S. Rey, R. Lo, P.
+Dao, S.C. Sahinalp, M. Ester, L.J. Foster, and F.S.L. Brinkman
+(2010) Bioinformatics 26(13):1608-1615.
+For more information please visit: http://www.psort.org
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      This App is based on the command-line version of PSORTb which is available uder the GNU General Public Licence (GNU GPL). 
+http://www.gnu.org/licenses/gpl.txt
+   </license>
+
+   <url>
+      <update url="http://blast2go-apps.github.io/psortb/update/"/>
+   </url>
+
+   <plugin
+         id="com.biobam.b2gapps.psortb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.biobam.blast2go.api.scm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

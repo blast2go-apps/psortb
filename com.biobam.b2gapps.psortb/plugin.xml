@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.biobam.blast2go.action.extension">
+      <client
+            class="com.biobam.b2gapps.psortb.actions.RunPsortbAction">
+      </client>
+      <client
+            class="com.biobam.b2gapps.psortb.actions.MergePsortbAction">
+      </client>
+   </extension>
+   <extension
+         point="com.biobam.blast2go.api.datatype.definition.extension">
+      <client
+            class="com.biobam.b2gapps.psortb.data.PsortbObjectCreator">
+      </client>
+   </extension>
+   <extension
+         point="com.biobam.blast2go.api.dataviewer.interfaces.controller">
+      <client
+            class="com.biobam.b2gapps.psortb.viewer.PsortbGenericTableControllerCreator">
+      </client>
+   </extension>
+
+</plugin>
