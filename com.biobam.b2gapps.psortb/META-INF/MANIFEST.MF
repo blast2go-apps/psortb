@@ -8,13 +8,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.biobam.blast2go.api.action;bundle-version="1.0.0",
  com.biobam.blast2go.project.model,
  com.biobam.blast2go.api;bundle-version="1.0.0",
- org.eclipse.e4.ui.model.workbench;bundle-version="1.1.0",
  lib.b2glibs,
- com.biobam.blast2go.connection.webcom,
- lib.axis1.6.2,
- com.biobam.blast2go.preferences.proxy,
  com.biobam.blast2go.basic_utilities,
  com.biobam.blast2go.api.dataviewer;bundle-version="1.0.0",
  com.biobam.blast2go.project.model.interfaces,
  com.biobam.blast2go.api.scm;bundle-version="1.0.0",
- com.biobam.blast2go.api.store
+ com.biobam.blast2go.api.store,
+ com.biobam.blast2go.api.gui
