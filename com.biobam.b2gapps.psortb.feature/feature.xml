@@ -2,7 +2,7 @@
 <feature
       id="com.biobam.b2gapps.psortb.feature"
       label="PSORTb"
-      version="1.0.0.qualifier"
+      version="1.0.5.qualifier"
       provider-name="BIOBAM"
       plugin="com.biobam.b2gapps.psortb">
 
@@ -18,7 +18,7 @@ Dao, S.C. Sahinalp, M. Ester, L.J. Foster, and F.S.L. Brinkman
 For more information please visit: http://www.psort.org
    </description>
 
-   <copyright>
+   <copyright url="http://blast2go-apps.github.io/psortb/update/">
       [Enter Copyright Description here.]
    </copyright>
 
@@ -26,10 +26,6 @@ For more information please visit: http://www.psort.org
       This App is based on the command-line version of PSORTb which is available uder the GNU General Public Licence (GNU GPL). 
 http://www.gnu.org/licenses/gpl.txt
    </license>
-
-   <url>
-      <update url="http://blast2go-apps.github.io/psortb/update/"/>
-   </url>
 
    <plugin
          id="com.biobam.b2gapps.psortb"
