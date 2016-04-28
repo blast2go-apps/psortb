@@ -6,6 +6,7 @@ import com.biobam.b2gapps.psortb.algo.PsortbParametersHelper.ORGANISM;
 import com.biobam.blast2go.api.job.parameters.Parameters;
 import com.biobam.blast2go.api.job.parameters.key.ListKey;
 import com.biobam.blast2go.api.job.parameters.key.NoteKey;
+import com.biobam.blast2go.api.job.parameters.keys.internal.ParameterKey;
 
 public class PsortbParameters extends Parameters {
 
@@ -36,8 +37,16 @@ public class PsortbParameters extends Parameters {
 	        .setDescription("There are some organisms whose Gram stains do not accurately reflect their cellular structure. Two additional analysis options are provided for these organisms by PSORTb:\n - Positive with outer membrane and\n - Negative without outer membrane\n\nUsers can choose to analyze organisms that stain Gram-positive but also have an outer membrane, such as Deinococcus radiodurans, Mycobacterium spp, and Veillonellaceae family of the Firmicutes phylum. The latter option allows users to analyze organisms that stain Gram-negative but have no outer membrane, such as organisms of the Tenericutes phylum, eg. Mycoplasma spp.")
 	        .build();
 
-	//	public ListKey<OUTPUT_FORMAT> outputFormat = ListKey.builder(getBaseName(".outputFormat"), OUTPUT_FORMAT.class, OUTPUT_FORMAT.values(), OUTPUT_FORMAT.SHORT_TAB)
-	//			.setName("Output format ")
-	//			.build();
+
+	@Override
+	public boolean isEnabled(ParameterKey<?> parameterKey) {
+		if (parameterKey == gram) {
+			return organism.getValue() == ORGANISM.BACTERIA;
+		}
+		if (parameterKey == advancedGram) {
+			return organism.getValue() == ORGANISM.BACTERIA && gram.getValue() == GRAM.ADVANCED;
+		}
+		return true;
+	}
 
 }
