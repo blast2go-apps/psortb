@@ -48,84 +48,184 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 	public List<IColumnData<?>> getColumnList() {
 		final List<IColumnData<?>> columns = new ArrayList<IColumnData<?>>();
 		columns.add(ColumnDataCreator.stringColumnBuilder("Sequence Name")
+		        .setContentCallback(new CallBack<String, String>() {
+
+			        @Override
+			        public String call(final String seqName) {
+				        if (object.containsEntry(seqName)) {
+					        return seqName;
+				        }
+				        return null;
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(150)
+		        .setMaxWidth(300)
+		        .build());
+
+		columns.add(ColumnDataCreator.stringColumnBuilder("Final Localization")
+		        .setContentCallback(new CallBack<String, String>() {
+
+			        @Override
+			        public String call(final String id) {
+				        return getEntry(id).getFinalLocalization();
+			        }
+		        })
+		        .setMinWidth(120)
+		        .setPrefferedWidth(300)
+		        .setMaxWidth(400)
+		        .build());
+		
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Final Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getFinalScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+//		        .setMaxWidth(70)
+		        .build());
+		
+		columns.add(ColumnDataCreator.stringColumnBuilder("GO ID")
+		        .setContentCallback(new CallBack<String, String>() {
+
+			        @Override
+			        public String call(final String id) {
+				        final String location = getEntry(id).getFinalLocalization();
+				        if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
+					        return "-";
+				        }
+				        return PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
+			        }
+		        })
+		        .setMinWidth(80)
+		        .setPrefferedWidth(80)
+		        .setMaxWidth(120)
+		        .build());
+		
+		
+		columns.add(ColumnDataCreator.stringColumnBuilder("Secondary Localization")
 				.setContentCallback(new CallBack<String, String>() {
-
-					@Override
-					public String call(final String seqName) {
-						if (object.containsEntry(seqName)) {
-							return seqName;
-						}
-						return null;
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(150)
-				.setMaxWidth(300)
-				.build());
-
-		columns.add(ColumnDataCreator.stringColumnBuilder("PSORTb Localization")
-				.setContentCallback(new CallBack<String, String>() {
-
+					
 					@Override
 					public String call(final String id) {
-						return getEntry(id).getLocation();
+						return getEntry(id).getSecondaryLocation();
 					}
 				})
 				.setMinWidth(120)
 				.setPrefferedWidth(300)
-		        .setMaxWidth(400)
+				.setMaxWidth(400)
+				.setDefaultInvisible()
 				.build());
-		columns.add(ColumnDataCreator.stringColumnBuilder("GO ID")
-				.setContentCallback(new CallBack<String, String>() {
+		
 
-					@Override
-					public String call(final String id) {
-						final String location = getEntry(id).getLocation();
-						if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
-							return "-";
-						}
-						return PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
-					}
-				})
-				.setMinWidth(80)
-				.setPrefferedWidth(80)
-				.setMaxWidth(120)
-				.build());
-
-		columns.add(ColumnDataCreator.doubleColumnBuilder("Score")
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Cytoplasmic Score")
 				.setContentCallback(new CallBack<String, Double>() {
-
+					
 					@Override
 					public Double call(final String id) {
-						return getEntry(id).getScore();
+						return getEntry(id).getCytoplasmicScore();
 					}
 				})
 				.setMinWidth(70)
 				.setPrefferedWidth(70)
-				.setMaxWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
+				.build());
+		
+		columns.add(ColumnDataCreator.doubleColumnBuilder("CytoplasmicMembrane Score")
+				.setContentCallback(new CallBack<String, Double>() {
+					
+					@Override
+					public Double call(final String id) {
+						return getEntry(id).getCytoplasmicMembraneScore();
+					}
+				})
+				.setMinWidth(70)
+				.setPrefferedWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
+				.build());
+		
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Cellwall Score")
+				.setContentCallback(new CallBack<String, Double>() {
+					
+					@Override
+					public Double call(final String id) {
+						return getEntry(id).getCellwallScore();
+					}
+				})
+				.setMinWidth(70)
+				.setPrefferedWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
+				.build());
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Extracellular Score")
+				.setContentCallback(new CallBack<String, Double>() {
+					
+					@Override
+					public Double call(final String id) {
+						return getEntry(id).getExtracellularScore();
+					}
+				})
+				.setMinWidth(70)
+				.setPrefferedWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
+				.build());
+		
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Periplasmic Score")
+				.setContentCallback(new CallBack<String, Double>() {
+					
+					@Override
+					public Double call(final String id) {
+						return getEntry(id).getPeriplasmicScore();
+					}
+				})
+				.setMinWidth(70)
+				.setPrefferedWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
+				.build());
+		
+		columns.add(ColumnDataCreator.doubleColumnBuilder("OuterMembrane Score")
+				.setContentCallback(new CallBack<String, Double>() {
+					
+					@Override
+					public Double call(final String id) {
+						return getEntry(id).getOuterMembraneScore();
+					}
+				})
+				.setMinWidth(70)
+				.setPrefferedWidth(70)
+//				.setMaxWidth(70)
+				.setDefaultInvisible()
 				.build());
 
 		columns.add(ColumnDataCreator.tagColumnBuilder()
-				.setContentCallback(new CallBack<String, List<ITableTag>>() {
-					@Override
-					public List<ITableTag> call(final String seqId) {
-						//				        final PsortbEntry entry = object.getEntry(seqId);
-						//				        final String location = entry.getLocation();
-						//				        if (!PsortbShortResultParser.LOCATION_TO_TAG_MAP.containsKey(location)) {
-						//					        return Collections.emptyList();
-						//				        }
-						//				        return Arrays.asList(PsortbShortResultParser.LOCATION_TO_TAG_MAP.get(location));
-						final PsortbEntry entry = object.getEntry(seqId);
-						final String location = entry.getLocation();
-						if (location.isEmpty() || location.equals("-") || location.equals("Unknown")) {
+		        .setContentCallback(new CallBack<String, List<ITableTag>>() {
+			        @Override
+			        public List<ITableTag> call(final String seqId) {
+				        //				        final PsortbEntry entry = object.getEntry(seqId);
+				        //				        final String location = entry.getLocation();
+				        //				        if (!PsortbShortResultParser.LOCATION_TO_TAG_MAP.containsKey(location)) {
+				        //					        return Collections.emptyList();
+				        //				        }
+				        //				        return Arrays.asList(PsortbShortResultParser.LOCATION_TO_TAG_MAP.get(location));
+				        final PsortbEntry entry = object.getEntry(seqId);
+				        final String location = entry.getFinalLocalization();
+				        if (location.isEmpty() || location.equals("-") || location.equals("Unknown")) {
 					        return Collections.emptyList();
-							//					        return Arrays.asList(NO_RESULT_TAG);
-						} else {
-							return Arrays.asList(RESULT_TAG);
-						}
-					}
-				})
-				.build());
+					        //					        return Arrays.asList(NO_RESULT_TAG);
+				        } else {
+					        return Arrays.asList(RESULT_TAG);
+				        }
+			        }
+		        })
+		        .build());
 		return columns;
 	}
 

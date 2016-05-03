@@ -154,7 +154,9 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 					PsortbEntry value = entry.getValue();
 					if (mergedData.containsKey(key)) {
 						sequenceID = key + "_from_" + psortObject.getName();
-						value = PsortbEntry.create(sequenceID, value.getLocation(), value.getScore());
+						value = value.cloneEntryWithNewName(sequenceID);
+						//						value = PsortbEntry.builder(sequenceID).
+						//						value = PsortbEntry.create(sequenceID, value.getLocation(), value.getScore());
 					}
 					mergedData.put(sequenceID, value);
 					break;

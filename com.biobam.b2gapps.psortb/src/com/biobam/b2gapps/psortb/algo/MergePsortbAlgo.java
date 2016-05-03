@@ -38,11 +38,11 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 		final PsortbObject psortbObject = (PsortbObject) parameters.file.getObjectValue();
 
 		beginTask(getName(), psortbObject.getResults()
-				.size());
+		        .size());
 
 		int newAnnots = 0;
 		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
-				.entryIterator(); iterator.hasNext();) {
+		        .entryIterator(); iterator.hasNext();) {
 			worked(1);
 			final Entry<String, PsortbEntry> entry = iterator.next();
 			final PsortbEntry psortbEntry = entry.getValue();
@@ -51,7 +51,8 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 				log.warn("Project does not contain the sequence {}", sequenceName);
 				continue;
 			}
-			final String location = psortbEntry.getLocation();
+
+			final String location = psortbEntry.getFinalLocalization();
 			if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
 				log.warn("Unknown location");
 				continue;
@@ -60,7 +61,7 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 			final ILightSequence sequence = project.findSequence(sequenceName);
 			if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
 				final List<String> currentAnnotation = sequence.getAnnotr()
-						.getGOs();
+				        .getGOs();
 				if (!currentAnnotation.contains(goID)) {
 					currentAnnotation.add(goID);
 					postJobMessage(goID + " added to sequence " + sequenceName);

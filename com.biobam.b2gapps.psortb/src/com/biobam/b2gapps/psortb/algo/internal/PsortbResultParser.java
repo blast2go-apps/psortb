@@ -2,7 +2,6 @@ package com.biobam.b2gapps.psortb.algo.internal;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,11 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.biobam.b2gapps.psortb.data.PsortbEntry;
+import com.biobam.b2gapps.psortb.data.PsortbEntry.Builder;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.ITableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TagColor;
@@ -57,44 +59,69 @@ public class PsortbResultParser {
 		}
 	});
 
-	public static PsortbEntry parseLine(final String line) {
-		if (line == null) {
-			throw new NullPointerException("Line can not be null");
-		}
-		final String[] lineSplit = line.split("\t");
-		if (lineSplit.length > 2) {
-			final String name = lineSplit[0].trim();
-			final String location = lineSplit[1].trim();
-			final double score = Double.parseDouble(lineSplit[2].trim());
-			return PsortbEntry.create(name, location, score);
-		}
-		log.error("Wrong file format. Line: {}", line);
-		throw new IllegalStateException("Wrong file format");
-	}
 
 	public static Collection<PsortbEntry> parseResult(final Path path, final IProgressMonitor monitor) {
 		final List<PsortbEntry> entries = new ArrayList<PsortbEntry>();
-		BufferedReader reader = null;
 		try {
-			reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-			// Skip first line
-			String line = reader.readLine();
-			while ((line = reader.readLine()) != null) {
-				entries.add(parseLine(line));
-				//				System.out.println(line);
+			BufferedReader in = Files.newBufferedReader(path);
+			Iterable<CSVRecord> records;
+			records = CSVFormat.TDF.withHeader()
+			        .parse(in);
+			for (CSVRecord record : records) {
+				String sequenceName = record.get("SeqID");
+				Builder eb = new PsortbEntry.Builder(sequenceName);
+
+				String finalLocalizationHeader = "Final_Localization";
+				if (record.isMapped(finalLocalizationHeader)) {
+					eb.setFinalLocalization(record.get(finalLocalizationHeader));
+				}
+
+				String finalScoreHeader = "Final_Score";
+				if (record.isMapped(finalScoreHeader)) {
+					eb.setFinalScore(Double.parseDouble(record.get(finalScoreHeader)));
+				}
+
+				String secondaryLocalizationHeader = "Secondary_Localization";
+				if (record.isMapped(secondaryLocalizationHeader)) {
+					eb.setSecondaryLocalization(record.get(secondaryLocalizationHeader));
+				}
+
+				String cytoplasmicScoreHeader = "Cytoplasmic_Score";
+				if (record.isMapped(cytoplasmicScoreHeader)) {
+					eb.setCytoplasmicScore(Double.parseDouble(record.get(cytoplasmicScoreHeader)));
+				}
+
+				String cytoplasmicMembraneScoreHeader = "CytoplasmicMembrane_Score";
+				if (record.isMapped(cytoplasmicMembraneScoreHeader)) {
+					eb.setCytoplasmicMembraneScore(Double.parseDouble(record.get(cytoplasmicMembraneScoreHeader)));
+				}
+
+				String cellwallScoreHeader = "Cellwall_Score";
+				if (record.isMapped(cellwallScoreHeader)) {
+					eb.setCellwallScore(Double.parseDouble(record.get(cellwallScoreHeader)));
+				}
+
+				String extracellularScoreHeader = "Extracellular_Score";
+				if (record.isMapped(extracellularScoreHeader)) {
+					eb.setExtracellularScore(Double.parseDouble(record.get(extracellularScoreHeader)));
+				}
+				
+				String periplasmicScoreHeader = "Periplasmic_Score";
+				if (record.isMapped(periplasmicScoreHeader)) {
+					eb.setPeriplasmicScore(Double.parseDouble(record.get(periplasmicScoreHeader)));
+				}
+				
+				String outerMembraneScore = "OuterMembrane_Score";
+				if (record.isMapped(outerMembraneScore)) {
+					eb.setOuterMembraneScore(Double.parseDouble(record.get(outerMembraneScore)));
+				}
+				entries.add(eb.build());
 				monitor.worked(1);
 			}
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			log.error("", e);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (final IOException e) {
-					log.error("", e);
-				}
-			}
 		}
+
 		return entries;
 	}
 

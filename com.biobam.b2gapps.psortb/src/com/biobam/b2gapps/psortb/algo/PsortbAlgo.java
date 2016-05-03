@@ -48,6 +48,7 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 		P_ORGANISM("organism"),
 		P_GRAM("gram"),
 		P_ADVANCED_GRAM("advancedgram"),
+		P_CUTOFF("cutoff"),
 		P_FILE_NAME("filename");
 		private String key;
 
@@ -119,11 +120,12 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 
 		final IServiceCloudParameters scParameters = IServiceCloudParameters.create();
 		scParameters.put(PSParameters.P_ORGANISM.key(), parameters.organism.getValue()
-				.getId());
+		        .getId());
 		scParameters.put(PSParameters.P_GRAM.key(), parameters.gram.getValue()
-				.getId());
+		        .getId());
 		scParameters.put(PSParameters.P_ADVANCED_GRAM.key(), parameters.advancedGram.getValue()
-				.getId());
+		        .getId());
+		scParameters.put(PSParameters.P_CUTOFF.key(), String.valueOf(parameters.cutoff.getValue()));
 
 		try {
 			iterator = project.onlySelectedSequencesIterator(orderList);

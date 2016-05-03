@@ -9,6 +9,7 @@ import com.biobam.b2gapps.psortb.algo.PsortbParameters;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 import com.biobam.blast2go.api.wizard.page.B2GWizardPage;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.ComboWidget;
+import com.biobam.blast2go.api.wizard.page.widget.implementations.DoubleWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.IComboWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.NoteWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.SpaceWidget;
@@ -56,6 +57,9 @@ public class PsortbWizard extends B2GWizard<PsortbParameters> {
 
 				configureGramWidget(gramWidget, parameters);
 				configureAdvancedGramWidget(advancedGramWidget, parameters);
+
+				addWidget(DoubleWidget.create(parent, parameters.cutoff));
+
 			}
 
 			private void configureGramWidget(final IComboWidget gramWidget, final PsortbParameters parameters) {
@@ -66,6 +70,7 @@ public class PsortbWizard extends B2GWizard<PsortbParameters> {
 				advancedGramWidget.setEnabled(parameters.isEnabled(parameters.advancedGram));
 			}
 		});
+
 	}
 
 }
