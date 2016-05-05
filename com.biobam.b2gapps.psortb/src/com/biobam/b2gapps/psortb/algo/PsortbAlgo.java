@@ -125,7 +125,7 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 		        .getId());
 		scParameters.put(PSParameters.P_ADVANCED_GRAM.key(), parameters.advancedGram.getValue()
 		        .getId());
-		scParameters.put(PSParameters.P_CUTOFF.key(), String.valueOf(parameters.cutoff.getValue()));
+		scParameters.put(PSParameters.P_CUTOFF.key(), String.valueOf(parameters.cutoff.getValue() / 10));
 
 		try {
 			iterator = project.onlySelectedSequencesIterator(orderList);

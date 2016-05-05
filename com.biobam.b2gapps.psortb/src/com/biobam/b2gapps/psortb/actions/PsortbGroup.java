@@ -35,7 +35,7 @@ public class PsortbGroup implements IB2GBaseGroup {
 
 	@Override
 	public IB2GIcon getGroupIcon() {
-		return B2GIconImpl.NO_ICON;
+		return IB2GIcon.DEFAULT_EMPTY_ICON;
 	}
 
 	@Override

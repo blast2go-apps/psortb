@@ -2,15 +2,17 @@
 <feature
       id="com.biobam.b2gapps.psortb.feature"
       label="PSORTb"
-      version="1.0.5.qualifier"
+      version="1.0.6.qualifier"
       provider-name="BIOBAM"
       plugin="com.biobam.b2gapps.psortb">
 
    <description>
       This App is based on the PSORTb 3.0, a prediction tool for bacterial protein subcellular localization predictions.
-This App is based on the &lt;b&gt;PSORTb 3.0&lt;/b&gt;, a prediction tool for bacterial protein subcellular localization predictions.
+This App is based on the PSORTb 3.0, a prediction tool
+for bacterial protein subcellular localization predictions.
 If you use this tool for your research please cite: 
-PSORTb 3.0: improved protein subcellular localization prediction with refined localization subcategories and predictive capabilities
+PSORTb 3.0: improved protein subcellular localization prediction
+with refined localization subcategories and predictive capabilities
 for all prokaryotes. 
 N.Y. Yu, J.R. Wagner, M.R. Laird, G. Melli, S. Rey, R. Lo, P.
 Dao, S.C. Sahinalp, M. Ester, L.J. Foster, and F.S.L. Brinkman
