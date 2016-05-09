@@ -2,7 +2,7 @@
 <feature
       id="com.biobam.b2gapps.psortb.feature"
       label="PSORTb"
-      version="1.0.8.qualifier"
+      version="1.0.9.qualifier"
       provider-name="BIOBAM"
       plugin="com.biobam.b2gapps.psortb">
 
