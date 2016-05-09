@@ -16,7 +16,7 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
-		return EnumSet.of(PlaceTag.WORKFLOW, PlaceTag.MAIN_MENU);
+		return EnumSet.of(PlaceTag.WORKFLOW, PlaceTag.MENU_ANALYSIS);
 	}
 
 	@Override

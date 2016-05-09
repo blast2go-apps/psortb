@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
-import com.biobam.blast2go.api.action.internal.menugroups.AnalysisSuperActionGroup;
 
 public class PsortbGroup implements IB2GBaseGroup {
 
@@ -29,7 +28,7 @@ public class PsortbGroup implements IB2GBaseGroup {
 
 	@Override
 	public IB2GBaseGroup getParentGroup() {
-		return AnalysisSuperActionGroup.INSTANCE;
+		return IB2GBaseGroup.BASE_GROUP;
 	}
 
 	@Override

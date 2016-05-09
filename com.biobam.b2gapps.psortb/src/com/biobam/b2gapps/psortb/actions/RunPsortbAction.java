@@ -16,7 +16,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
-		return EnumSet.of(PlaceTag.WORKFLOW, PlaceTag.MAIN_MENU);
+		return EnumSet.of(PlaceTag.WORKFLOW, PlaceTag.MENU_ANALYSIS);
 	}
 
 	@Override
