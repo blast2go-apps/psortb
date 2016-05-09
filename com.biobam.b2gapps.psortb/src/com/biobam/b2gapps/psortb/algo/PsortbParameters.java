@@ -18,7 +18,7 @@ public class PsortbParameters extends Parameters {
 		add(gram);
 		add(advancedGram);
 		add(cutoff);
-		//		add(outputFormat);
+		// add(outputFormat);
 	}
 
 	public NoteKey note = NoteKey.builder(getBaseName(".note"))

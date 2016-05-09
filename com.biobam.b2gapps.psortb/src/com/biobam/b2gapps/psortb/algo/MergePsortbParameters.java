@@ -14,15 +14,18 @@ public class MergePsortbParameters extends Parameters {
 		add(file);
 	}
 
-	public NoteKey note = NoteKey.builder(getBaseName(".note"))
-			.setDescription("Merge PSORTb gene ontology terms with project annotations.")
+	public NoteKey note = NoteKey
+			.builder(getBaseName(".note"))
+			.setDescription(
+					"Merge PSORTb gene ontology terms with project annotations.")
 			.build();
 
-	public FileObjectKey file = FileObjectKey.builder(getBaseName(".file"))
-			.addObjectFilter(new FileObjectTypeFilter(PsortbObject.class, "PSORTb Results"))
-			.setName("PSORTb Results File")
+	public FileObjectKey file = FileObjectKey
+			.builder(getBaseName(".file"))
+			.addObjectFilter(
+					new FileObjectTypeFilter(PsortbObject.class,
+							"PSORTb Results")).setName("PSORTb Results File")
 			.setDescription("PSORTb Results File")
-			.setValidator(PathValidator.existingFile())
-			.build();
+			.setValidator(PathValidator.existingFile()).build();
 
 }

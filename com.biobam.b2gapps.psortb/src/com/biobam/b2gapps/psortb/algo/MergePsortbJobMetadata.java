@@ -8,7 +8,8 @@ import com.biobam.blast2go.api.job.InputDefinition;
 import es.blast2go.data.IProject;
 import es.blast2go.data.IProjectConstants;
 
-public class MergePsortbJobMetadata implements IB2GJobMetadata<MergePsortbAlgo, MergePsortbParameters> {
+public class MergePsortbJobMetadata implements
+		IB2GJobMetadata<MergePsortbAlgo, MergePsortbParameters> {
 
 	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
 

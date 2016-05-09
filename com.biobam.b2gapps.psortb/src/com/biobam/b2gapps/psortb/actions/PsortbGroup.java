@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
-import com.biobam.blast2go.api.action.icon.B2GIconImpl;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
 import com.biobam.blast2go.api.action.internal.menugroups.AnalysisSuperActionGroup;
 

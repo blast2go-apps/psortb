@@ -6,13 +6,11 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: BIOBAM
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.biobam.blast2go.api.action,
- com.biobam.blast2go.project.model,
- com.biobam.blast2go.api,
- lib.b2glibs,
- com.biobam.blast2go.basic_utilities,
- com.biobam.blast2go.api.dataviewer,
  com.biobam.blast2go.project.model.interfaces,
- com.biobam.blast2go.api.scm,
  com.biobam.blast2go.api.store,
- com.biobam.blast2go.api.gui,
+ com.biobam.blast2go.project.model;bundle-version="1.0.0",
+ com.biobam.blast2go.api.scm,
+ com.biobam.blast2go.api.dataviewer.interfaces,
+ com.biobam.blast2go.basic_utilities,
+ lib.b2glibs,
  lib.csv

@@ -38,7 +38,8 @@ public class PsortbWizard extends B2GWizard<PsortbParameters> {
 
 					@Override
 					public void propertyChange(final PropertyChangeEvent evt) {
-						//						final ORGANISM newValue = (ORGANISM) evt.getNewValue();
+						// final ORGANISM newValue = (ORGANISM)
+						// evt.getNewValue();
 						configureGramWidget(gramWidget, parameters);
 						configureAdvancedGramWidget(advancedGramWidget, parameters);
 					}
@@ -49,7 +50,8 @@ public class PsortbWizard extends B2GWizard<PsortbParameters> {
 
 					@Override
 					public void propertyChange(final PropertyChangeEvent evt) {
-						//						final GRAM newValue = (GRAM) evt.getNewValue();
+						// final GRAM newValue = (GRAM)
+						// evt.getNewValue();
 						configureAdvancedGramWidget(advancedGramWidget, parameters);
 					}
 

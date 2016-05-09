@@ -13,6 +13,8 @@ import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+//import org.apache.commons.csv.CSVFormat;
+//import org.apache.commons.csv.CSVRecord;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +61,6 @@ public class PsortbResultParser {
 		}
 	});
 
-
 	public static Collection<PsortbEntry> parseResult(final Path path, final IProgressMonitor monitor) {
 		final List<PsortbEntry> entries = new ArrayList<PsortbEntry>();
 		try {
@@ -105,12 +106,12 @@ public class PsortbResultParser {
 				if (record.isMapped(extracellularScoreHeader)) {
 					eb.setExtracellularScore(Double.parseDouble(record.get(extracellularScoreHeader)));
 				}
-				
+
 				String periplasmicScoreHeader = "Periplasmic_Score";
 				if (record.isMapped(periplasmicScoreHeader)) {
 					eb.setPeriplasmicScore(Double.parseDouble(record.get(periplasmicScoreHeader)));
 				}
-				
+
 				String outerMembraneScore = "OuterMembrane_Score";
 				if (record.isMapped(outerMembraneScore)) {
 					eb.setOuterMembraneScore(Double.parseDouble(record.get(outerMembraneScore)));
@@ -121,7 +122,7 @@ public class PsortbResultParser {
 		} catch (IOException e) {
 			log.error("", e);
 		}
-
+		//
 		return entries;
 	}
 

@@ -19,7 +19,8 @@ import es.blast2go.data.AnnotationResult;
 import es.blast2go.data.IProject;
 
 public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
-	private static final Logger log = LoggerFactory.getLogger(MergePsortbAlgo.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(MergePsortbAlgo.class);
 
 	public MergePsortbAlgo() {
 		super("Merge PSORTb GOs to Annotation", new MergePsortbParameters());
@@ -35,20 +36,21 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 		}
 
 		final MergePsortbParameters parameters = getParameters();
-		final PsortbObject psortbObject = (PsortbObject) parameters.file.getObjectValue();
+		final PsortbObject psortbObject = (PsortbObject) parameters.file
+				.getObjectValue();
 
-		beginTask(getName(), psortbObject.getResults()
-		        .size());
+		beginTask(getName(), psortbObject.getResults().size());
 
 		int newAnnots = 0;
-		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
-		        .entryIterator(); iterator.hasNext();) {
+		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject
+				.getResults().entryIterator(); iterator.hasNext();) {
 			worked(1);
 			final Entry<String, PsortbEntry> entry = iterator.next();
 			final PsortbEntry psortbEntry = entry.getValue();
 			final String sequenceName = psortbEntry.getSequenceName();
 			if (!project.contains(sequenceName)) {
-				log.warn("Project does not contain the sequence {}", sequenceName);
+				log.warn("Project does not contain the sequence {}",
+						sequenceName);
 				continue;
 			}
 
@@ -57,11 +59,12 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 				log.warn("Unknown location");
 				continue;
 			}
-			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
+			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP
+					.get(location);
 			final ILightSequence sequence = project.findSequence(sequenceName);
 			if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
 				final List<String> currentAnnotation = sequence.getAnnotr()
-				        .getGOs();
+						.getGOs();
 				if (!currentAnnotation.contains(goID)) {
 					currentAnnotation.add(goID);
 					postJobMessage(goID + " added to sequence " + sequenceName);
