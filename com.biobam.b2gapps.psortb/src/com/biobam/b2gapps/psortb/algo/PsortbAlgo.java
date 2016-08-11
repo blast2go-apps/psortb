@@ -45,11 +45,8 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 	private IServiceCloud service;
 
 	enum PSParameters {
-		P_ORGANISM("organism"),
-		P_GRAM("gram"),
-		P_ADVANCED_GRAM("advancedgram"),
-		P_CUTOFF("cutoff"),
-		P_FILE_NAME("filename");
+		P_ORGANISM("organism"), P_GRAM("gram"), P_ADVANCED_GRAM("advancedgram"), P_CUTOFF("cutoff"), P_FILE_NAME(
+				"filename");
 		private String key;
 
 		private PSParameters(final String key) {
@@ -71,7 +68,8 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 			return;
 		}
 		if (!project.atLeastOneSequenceComplies(SeqCondImpl.COND_HAS_SEQ_STRING)) {
-			setFinishMessage("There are no sequences with sequence information, please load the original fasta-file and try again.");
+			setFinishMessage(
+					"There are no sequences with sequence information, please load the original fasta-file and try again.");
 			return;
 		}
 
@@ -86,11 +84,13 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 			final ILightSequence seq = iterator.next();
 			parseResult.put(seq.getName(), PsortbEntry.createEmpty(seq.getName()));
 		}
-		final PsortbObject resultObject = PsortbObject.newInstance("PSORTb Results" + addInputObjectNames(), parseResult);
-		// Post the object, it will be updated with results during the execution.
+		final PsortbObject resultObject = PsortbObject.newInstance("PSORTb Results" + addInputObjectNames(),
+				parseResult);
+		// Post the object, it will be updated with results during the
+		// execution.
 		postOutputResults(resultObject);
 
-		//		int sequencesProcessedCount = 0;
+		// int sequencesProcessedCount = 0;
 		int lengthCount = 0;
 		final int LENGTH_LIMIT = 2000;
 		File file;
@@ -119,14 +119,13 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 		});
 
 		final IServiceCloudParameters scParameters = IServiceCloudParameters.create();
-		scParameters.put(PSParameters.P_ORGANISM.key(), parameters.organism.getValue()
-		        .getId());
-		scParameters.put(PSParameters.P_GRAM.key(), parameters.gram.getValue()
-		        .getId());
-		scParameters.put(PSParameters.P_ADVANCED_GRAM.key(), parameters.advancedGram.getValue()
-		        .getId());
+		scParameters.put(PSParameters.P_ORGANISM.key(), parameters.organism.getValue().getId());
+		scParameters.put(PSParameters.P_GRAM.key(), parameters.gram.getValue().getId());
+		scParameters.put(PSParameters.P_ADVANCED_GRAM.key(), parameters.advancedGram.getValue().getId());
 		scParameters.put(PSParameters.P_CUTOFF.key(), String.valueOf(parameters.cutoff.getValue() / 10));
 
+		int nucleotidesSequencesCount = 0;
+		int aminoacidSequences = 0;
 		try {
 			iterator = project.onlySelectedSequencesIterator(orderList);
 			while (iterator.hasNext() && !isCanceled()) {
@@ -136,10 +135,12 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 				}
 				final String sequenceString = sequence.getSeqString();
 				if (Utilities.isSequenceNucletide(sequenceString)) {
-					setFinishMessage("PSORTb requires protein sequences.");
-					return;
+					// return;
+					nucleotidesSequencesCount++;
+					continue;
+				}else{
+					aminoacidSequences++;
 				}
-				//				sequencesProcessedCount++;
 
 				if (lengthCount + sequence.getSeqLength() < LENGTH_LIMIT && iterator.hasNext()) {
 					packToFile(file, sequence);
@@ -154,9 +155,12 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 					scParameters.put(PSParameters.P_FILE_NAME.key(), FileUtils.getFileName(file.getAbsolutePath()));
 					RequestPack packToSend;
 					try {
-						packToSend = new RequestPack(SERVICE_NAME, scParameters.toJsonString(), Arrays.asList(file.getAbsolutePath()));
+						packToSend = new RequestPack(SERVICE_NAME, scParameters.toJsonString(),
+								Arrays.asList(file.getAbsolutePath()));
 						service.sendRequestPack(packToSend);
-						//						postJobMessage(sequencesProcessedCount + "/" + project.getSelectedSequencesCount() + " sequences processed...");
+						// postJobMessage(sequencesProcessedCount + "/" +
+						// project.getSelectedSequencesCount() + " sequences
+						// processed...");
 					} catch (final JSONException e1) {
 						log.error("Could not create the parameters", e1);
 						throw new IllegalStateException("Could not create the parameters. Algorithm will stop");
@@ -187,6 +191,13 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 		} finally {
 			if (file != null) {
 				file.delete();
+			}
+
+			if (nucleotidesSequencesCount == 0) {
+				setFinishMessage("PSORTb finished. You can merge the new GOs with the original project annotation.");
+			} else {
+				setFinishMessage("PSORTb finished.\n" + nucleotidesSequencesCount
+						+ " nucleotides sequences were skipped. Only protein sequences have been processed.");
 			}
 			service.waitForTermination();
 			addModificationInfo(resultObject);

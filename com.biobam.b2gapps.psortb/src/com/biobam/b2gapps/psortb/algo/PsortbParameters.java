@@ -22,7 +22,10 @@ public class PsortbParameters extends Parameters {
 	}
 
 	public NoteKey note = NoteKey.builder(getBaseName(".note"))
-	        .setDescription("PSORTb is the most precise bacterial localization prediction tool available. PSORTb requires that a PROTEIN sequence be submitted.")
+	        .setDescription("PSORTb is the most precise bacterial localization prediction tool available.\n"
+	        		+ "The input data must be PROTEIN sequences.\n"
+	        		+ "<b>Note:<b>"
+	        		+ "If you work with nucleotide sequences, they can be translated into longest ORF protein sequences or replaced by the blastx top-hits using the options available in the Tools menu.")
 	        .build();
 
 	public ListKey<ORGANISM> organism = ListKey.builder(getBaseName(".organism"), ORGANISM.class, ORGANISM.values(), ORGANISM.BACTERIA)
