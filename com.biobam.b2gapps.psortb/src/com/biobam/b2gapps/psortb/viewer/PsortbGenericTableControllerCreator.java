@@ -36,7 +36,7 @@ public class PsortbGenericTableControllerCreator implements IB2GObjectController
 
 	@Override
 	public EnumSet<WorkbenchProperty> getWorkbenchProperties() {
-		return EnumSet.of(WorkbenchProperty.DEFAULT_VIEWER, WorkbenchProperty.IMPORTANCE_PRIMARY_VIEWER, WorkbenchProperty.POSITION_MAIN, WorkbenchProperty.SAVE_ALLOWED);
+		return EnumSet.of(WorkbenchProperty.DEFAULT_VIEWER, WorkbenchProperty.IMPORTANCE_PRIMARY_VIEWER, WorkbenchProperty.POSITION_RESULT, WorkbenchProperty.SAVE_ALLOWED, WorkbenchProperty.AUTOSAVE_ALLOWED);
 	}
 
 }
