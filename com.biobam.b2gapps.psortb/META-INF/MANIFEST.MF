@@ -2,15 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Psortb
 Bundle-SymbolicName: com.biobam.b2gapps.psortb;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: BIOBAM
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: com.biobam.blast2go.api.action,
- com.biobam.blast2go.project.model.interfaces,
- com.biobam.blast2go.api.store,
- com.biobam.blast2go.project.model;bundle-version="1.0.0",
- com.biobam.blast2go.api.scm,
- com.biobam.blast2go.api.dataviewer.interfaces,
- com.biobam.blast2go.basic_utilities,
+Require-Bundle: com.biobam.blast2go.api.action;bundle-version="4.0.0",
+ com.biobam.blast2go.project.model.interfaces;bundle-version="4.0.0",
+ com.biobam.blast2go.api.store;bundle-version="4.0.0",
+ com.biobam.blast2go.project.model;bundle-version="4.0.0",
+ com.biobam.blast2go.api.scm;bundle-version="4.0.0",
+ com.biobam.blast2go.api.dataviewer.interfaces;bundle-version="4.0.0",
  lib.b2glibs,
- lib.csv
+ lib.csv,
+ com.biobam.blast2go.basic_utilities;bundle-version="4.0.0"
