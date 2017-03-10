@@ -1,11 +1,12 @@
 package com.biobam.b2gapps.psortb.algo;
 
-import com.biobam.b2gapps.psortb.data.PsortbObject;
 import com.biobam.blast2go.api.job.parameters.Parameters;
 import com.biobam.blast2go.api.job.parameters.key.FileObjectKey;
 import com.biobam.blast2go.api.job.parameters.key.NoteKey;
 import com.biobam.blast2go.api.job.parameters.key.additional.FileObjectTypeFilter;
 import com.biobam.blast2go.api.job.parameters.key.validator.PathValidator;
+
+import es.blast2go.data.IProject;
 
 public class MergePsortbParameters extends Parameters {
 
@@ -19,9 +20,9 @@ public class MergePsortbParameters extends Parameters {
 	        .build();
 
 	public FileObjectKey file = FileObjectKey.builder(getBaseName(".file"))
-	        .addObjectFilter(new FileObjectTypeFilter(PsortbObject.class, "PSORTb Results"))
-	        .setName("PSORTb Results File")
-	        .setDescription("PSORTb Results File")
+	        .addObjectFilter(new FileObjectTypeFilter(IProject.class, "B2G Project"))
+	        .setName("Blast2GO Project File")
+	        .setDescription("This should be a Blast2GO project while. The GOs from the PSORTb will be merged in the Blast2GO project.")
 	        .setValidator(PathValidator.existingFile())
 	        .build();
 

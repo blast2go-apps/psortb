@@ -9,6 +9,7 @@ import com.biobam.blast2go.api.action.ActionType;
 import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
+import com.biobam.blast2go.api.action.icon.DefaultB2GIcons;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
@@ -16,17 +17,17 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
-		return EnumSet.of(PlaceTag.WORKFLOW, PlaceTag.MENU_ANALYSIS);
+		return EnumSet.of(PlaceTag.PART_SIDE_BAR);
 	}
 
 	@Override
 	public String getName() {
-		return "Merge PSORTb GOs to Annotation";
+		return "Merge GOs to Project";
 	}
 
 	@Override
 	public IB2GIcon getActionIcon() {
-		return IB2GIcon.DEFAULT_EMPTY_ICON;
+		return DefaultB2GIcons.PROJECT_ICON;
 	}
 
 	@Override

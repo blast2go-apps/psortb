@@ -19,8 +19,7 @@ import es.blast2go.data.AnnotationResult;
 import es.blast2go.data.IProject;
 
 public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
-	private static final Logger log = LoggerFactory
-			.getLogger(MergePsortbAlgo.class);
+	private static final Logger log = LoggerFactory.getLogger(MergePsortbAlgo.class);
 
 	public MergePsortbAlgo() {
 		super("Merge PSORTb GOs to Annotation", new MergePsortbParameters());
@@ -28,43 +27,44 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 
 	@Override
 	public void run() throws InterruptedException {
-		final IProject project = getInput(MergePsortbJobMetadata.INPUT_PROJECT);
-
-		if (project.getSelectedSequencesCount() == 0) {
-			setFinishMessage("No sequences selected.");
-			return;
-		}
-
+		//		final IProject project = getInput(MergePsortbJobMetadata.INPUT_PROJECT);
 		final MergePsortbParameters parameters = getParameters();
-		final PsortbObject psortbObject = (PsortbObject) parameters.file
-				.getObjectValue();
+		final IProject project = (IProject) parameters.file.getObjectValue();
 
-		beginTask(getName(), psortbObject.getResults().size());
+		//		if (project.getSelectedSequencesCount() == 0) {
+		//			setFinishMessage("No sequences selected.");
+		//			return;
+		//		}
+
+		final PsortbObject psortbObject = getInput(MergePsortbJobMetadata.INPUT_PSORTB_RESULT);
+		//		final PsortbObject psortbObject = (PsortbObject) parameters.file
+		//				.getObjectValue();
+
+		beginTask(getName(), psortbObject.getResults()
+		        .size());
 
 		int newAnnots = 0;
-		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject
-				.getResults().entryIterator(); iterator.hasNext();) {
+		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
+		        .entryIterator(); iterator.hasNext();) {
 			worked(1);
 			final Entry<String, PsortbEntry> entry = iterator.next();
 			final PsortbEntry psortbEntry = entry.getValue();
 			final String sequenceName = psortbEntry.getSequenceName();
 			if (!project.contains(sequenceName)) {
-				log.warn("Project does not contain the sequence {}",
-						sequenceName);
+				log.warn("Project does not contain the sequence {}", sequenceName);
 				continue;
 			}
 
 			final String location = psortbEntry.getFinalLocalization();
 			if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
-				log.warn("Unknown location");
+				log.info("Unknown location: " + location);
 				continue;
 			}
-			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP
-					.get(location);
+			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
 			final ILightSequence sequence = project.findSequence(sequenceName);
 			if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
 				final List<String> currentAnnotation = sequence.getAnnotr()
-						.getGOs();
+				        .getGOs();
 				if (!currentAnnotation.contains(goID)) {
 					currentAnnotation.add(goID);
 					postJobMessage(goID + " added to sequence " + sequenceName);
@@ -83,6 +83,7 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 		}
 
 		addModificationInfo(project);
+		postOutputResults(project);
 		setFinishMessage(newAnnots + " annotations added to the project.");
 	}
 }
