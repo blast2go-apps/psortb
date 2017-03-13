@@ -37,7 +37,7 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 
 	@Override
 	public IB2GBaseGroup getActionGroup() {
-		return PsortbGroup.INSTANCE;
+		return IB2GBaseGroup.BASE_GROUP;
 	}
 
 	@Override

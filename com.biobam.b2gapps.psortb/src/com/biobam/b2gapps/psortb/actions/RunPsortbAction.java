@@ -15,6 +15,11 @@ import com.biobam.blast2go.api.wizard.B2GWizard;
 public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
+	public IB2GBaseGroup getActionGroup() {
+		return IB2GBaseGroup.BASE_GROUP;
+	}
+
+	@Override
 	public Set<PlaceTag> getPlaceTags() {
 		return EnumSet.of(PlaceTag.MENU_ANALYSIS);
 	}
@@ -31,12 +36,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public int getPreferredPositionInMenu() {
-		return 0;
-	}
-
-	@Override
-	public IB2GBaseGroup getActionGroup() {
-		return PsortbGroup.INSTANCE;
+		return 8;
 	}
 
 	@Override
