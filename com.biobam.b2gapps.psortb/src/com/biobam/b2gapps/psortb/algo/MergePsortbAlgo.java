@@ -1,8 +1,6 @@
 package com.biobam.b2gapps.psortb.algo;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Vector;
 
 import org.slf4j.Logger;
@@ -27,28 +25,23 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 
 	@Override
 	public void run() throws InterruptedException {
-		//		final IProject project = getInput(MergePsortbJobMetadata.INPUT_PROJECT);
+
 		final MergePsortbParameters parameters = getParameters();
 		final IProject project = (IProject) parameters.file.getObjectValue();
-
-		//		if (project.getSelectedSequencesCount() == 0) {
-		//			setFinishMessage("No sequences selected.");
-		//			return;
-		//		}
-
 		final PsortbObject psortbObject = getInput(MergePsortbJobMetadata.INPUT_PSORTB_RESULT);
-		//		final PsortbObject psortbObject = (PsortbObject) parameters.file
-		//				.getObjectValue();
 
+		List<String> idList = psortbObject.getIdList();
 		beginTask(getName(), psortbObject.getResults()
 		        .size());
 
 		int newAnnots = 0;
-		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
-		        .entryIterator(); iterator.hasNext();) {
+
+		for (String entryId : idList) {
 			worked(1);
-			final Entry<String, PsortbEntry> entry = iterator.next();
-			final PsortbEntry psortbEntry = entry.getValue();
+			final PsortbEntry psortbEntry = psortbObject.getEntry(entryId);
+			if (psortbEntry == null) {
+				continue;
+			}
 			final String sequenceName = psortbEntry.getSequenceName();
 			if (!project.contains(sequenceName)) {
 				log.warn("Project does not contain the sequence {}", sequenceName);
