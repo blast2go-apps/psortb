@@ -9,6 +9,9 @@
       <client
             class="com.biobam.b2gapps.psortb.actions.MergePsortbAction">
       </client>
+      <client
+            class="com.biobam.b2gapps.psortb.actions.MergePsortbWorkflowAction">
+      </client>
    </extension>
    <extension
          point="com.biobam.blast2go.api.datatype.definition.extension">
