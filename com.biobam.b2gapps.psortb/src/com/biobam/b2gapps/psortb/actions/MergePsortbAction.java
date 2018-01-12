@@ -11,9 +11,12 @@ import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
 import com.biobam.blast2go.api.action.icon.DefaultB2GIcons;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
+import com.biobam.blast2go.api.action.internal.IB2GPermissionHandler;
+import com.biobam.blast2go.api.user.IUserInfoConstants;
+import com.biobam.blast2go.api.user.Profile;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
+public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> implements IB2GPermissionHandler{
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
@@ -58,6 +61,11 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 	@Override
 	public String getId() {
 		return "com.biobam.b2gapps.psortb.merge.action";
+	}
+
+	@Override
+	public EnumSet<Profile> executionPermissions() {
+		return IUserInfoConstants.ALL_USERS_GROUP;
 	}
 
 }
