@@ -12,7 +12,7 @@ public class PsortbObjectValue extends B2GObjectValue {
 	 */
 	private static final long serialVersionUID = -1407257839893019088L;
 
-	final static String ISTORE_KEY = "psort_istore_key";
+	public final static String ISTORE_KEY = "psort_istore_key";
 	Collection<String> sequenceOrder;
 
 	public PsortbObjectValue(final B2GObject bbObject) {

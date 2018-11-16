@@ -71,18 +71,19 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 
 		beginTask(getName(), project.getSelectedSequencesCount());
 
-		// Create the output PsortB adding empty entries.
 		final Map<String, PsortbEntry> parseResult = new LinkedHashMap<String, PsortbEntry>();
+		final PsortbObject resultObject = PsortbObject.newInstance("PSORTb Results" + addInputObjectNames(), parseResult);
+
+		// Create the output PsortB adding empty entries.
 		Iterator<ILightSequence> iterator = project.onlySelectedSequencesIterator(orderList);
 		while (iterator.hasNext() && !isCanceled()) {
 			final ILightSequence seq = iterator.next();
-			parseResult.put(seq.getName(), PsortbEntry.createEmpty(seq.getName()));
+			resultObject.addPsortEntry(PsortbEntry.createEmpty(seq.getName()));
 		}
 
-		final PsortbObject resultObject = PsortbObject.newInstance("PSORTb Results" + addInputObjectNames(), parseResult);
 		addModificationInfo(resultObject);
 
-		// Post the output object. Entries will be updated with results during the execution.
+//		// Post the output object. Entries will be updated with results during the execution.
 		postOutputResults(resultObject);
 
 		try {
@@ -128,6 +129,8 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 			service.startSending();
 
 		} finally {
+			// Post the output object. Entries will be updated with results during the execution.
+//			postOutputResults(resultObject);
 
 			// Set the finish message (including process statistics).
 

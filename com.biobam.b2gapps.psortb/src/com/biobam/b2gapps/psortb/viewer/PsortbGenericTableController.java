@@ -20,6 +20,7 @@ import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.ITableModelChan
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.ITableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TagColor;
+import com.biobam.blast2go.basic_utilities.B2GObservable;
 
 public class PsortbGenericTableController implements IB2GTableFormat<PsortbObject, PsortbEntry>, PropertyChangeListener {
 
@@ -47,6 +48,28 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 	@Override
 	public List<IColumnData<?>> getColumnList() {
 		final List<IColumnData<?>> columns = new ArrayList<IColumnData<?>>();
+		columns.add(ColumnDataCreator.tagColumnBuilder()
+		        .setContentCallback(new CallBack<String, List<ITableTag>>() {
+			        @Override
+			        public List<ITableTag> call(final String seqId) {
+				        //				        final PsortbEntry entry = object.getEntry(seqId);
+				        //				        final String location = entry.getLocation();
+				        //				        if (!PsortbShortResultParser.LOCATION_TO_TAG_MAP.containsKey(location)) {
+				        //					        return Collections.emptyList();
+				        //				        }
+				        //				        return Arrays.asList(PsortbShortResultParser.LOCATION_TO_TAG_MAP.get(location));
+				        final PsortbEntry entry = object.getEntry(seqId);
+				        final String location = entry.getFinalLocalization();
+				        if (location == null || location.isEmpty() || location.equals("-") || location.equals("Unknown")) {
+					        return Collections.emptyList();
+					        //					        return Arrays.asList(NO_RESULT_TAG);
+				        } else {
+					        return Arrays.asList(RESULT_TAG);
+				        }
+			        }
+		        })
+		        .build());
+
 		columns.add(ColumnDataCreator.stringColumnBuilder("Sequence Name")
 		        .setContentCallback(new CallBack<String, String>() {
 
@@ -75,7 +98,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		        .setPrefferedWidth(300)
 		        .setMaxWidth(400)
 		        .build());
-		
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Final Score")
 		        .setContentCallback(new CallBack<String, Double>() {
 
@@ -86,9 +109,9 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		        })
 		        .setMinWidth(70)
 		        .setPrefferedWidth(70)
-//		        .setMaxWidth(70)
+		        //		        .setMaxWidth(70)
 		        .build());
-		
+
 		columns.add(ColumnDataCreator.stringColumnBuilder("GO ID")
 		        .setContentCallback(new CallBack<String, String>() {
 
@@ -105,126 +128,102 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		        .setPrefferedWidth(80)
 		        .setMaxWidth(120)
 		        .build());
-		
-		
+
 		columns.add(ColumnDataCreator.stringColumnBuilder("Secondary Localization")
-				.setContentCallback(new CallBack<String, String>() {
-					
-					@Override
-					public String call(final String id) {
-						return getEntry(id).getSecondaryLocation();
-					}
-				})
-				.setMinWidth(120)
-				.setPrefferedWidth(300)
-				.setMaxWidth(400)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, String>() {
 
-		columns.add(ColumnDataCreator.doubleColumnBuilder("Cytoplasmic Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCytoplasmicScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
-		columns.add(ColumnDataCreator.doubleColumnBuilder("CytoplasmicMembrane Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCytoplasmicMembraneScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
-		columns.add(ColumnDataCreator.doubleColumnBuilder("Cellwall Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCellwallScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		columns.add(ColumnDataCreator.doubleColumnBuilder("Extracellular Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getExtracellularScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
-		columns.add(ColumnDataCreator.doubleColumnBuilder("Periplasmic Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getPeriplasmicScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
-		columns.add(ColumnDataCreator.doubleColumnBuilder("OuterMembrane Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getOuterMembraneScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-
-		columns.add(ColumnDataCreator.tagColumnBuilder()
-		        .setContentCallback(new CallBack<String, List<ITableTag>>() {
 			        @Override
-			        public List<ITableTag> call(final String seqId) {
-				        //				        final PsortbEntry entry = object.getEntry(seqId);
-				        //				        final String location = entry.getLocation();
-				        //				        if (!PsortbShortResultParser.LOCATION_TO_TAG_MAP.containsKey(location)) {
-				        //					        return Collections.emptyList();
-				        //				        }
-				        //				        return Arrays.asList(PsortbShortResultParser.LOCATION_TO_TAG_MAP.get(location));
-				        final PsortbEntry entry = object.getEntry(seqId);
-				        final String location = entry.getFinalLocalization();
-				        if (location.isEmpty() || location.equals("-") || location.equals("Unknown")) {
-					        return Collections.emptyList();
-					        //					        return Arrays.asList(NO_RESULT_TAG);
-				        } else {
-					        return Arrays.asList(RESULT_TAG);
-				        }
+			        public String call(final String id) {
+				        return getEntry(id).getSecondaryLocation();
 			        }
 		        })
+		        .setMinWidth(120)
+		        .setPrefferedWidth(300)
+		        .setMaxWidth(400)
+		        .setDefaultInvisible()
+		        .build());
+
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Cytoplasmic Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCytoplasmicScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
+		columns.add(ColumnDataCreator.doubleColumnBuilder("CytoplasmicMembrane Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCytoplasmicMembraneScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Cellwall Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCellwallScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Extracellular Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getExtracellularScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
+		columns.add(ColumnDataCreator.doubleColumnBuilder("Periplasmic Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getPeriplasmicScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
+		columns.add(ColumnDataCreator.doubleColumnBuilder("OuterMembrane Score")
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getOuterMembraneScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
 		        .build());
 		return columns;
 	}
@@ -256,7 +255,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			return;
 		}
 		final String eventName = event.getPropertyName();
-		if (eventName.equals(PsortbObject.UPDATE_ENTRY)) {
+		if (eventName.equals(B2GObservable.PROPERTY_UPDATE_ENTRY)) {
 			changeCallback.changedEntry((String) event.getOldValue());
 		}
 	}
@@ -272,5 +271,4 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		}
 		return PsortbObject.newInstance(object.getName() + " extraction", newMap);
 	}
-
 }
