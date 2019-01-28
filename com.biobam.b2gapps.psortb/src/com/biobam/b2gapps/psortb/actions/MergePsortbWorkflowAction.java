@@ -10,7 +10,8 @@ import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
 import com.biobam.blast2go.api.action.icon.DefaultB2GIcons;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
-import com.biobam.blast2go.api.action.internal.menugroups.AnalysisGroup;
+import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGroup;
+import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
 public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobMetadata> {
@@ -32,12 +33,12 @@ public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobM
 
 	@Override
 	public int getPreferredPositionInMenu() {
-		return 10;
+		return 20;
 	}
 
 	@Override
 	public IB2GBaseGroup getActionGroup() {
-		return AnalysisGroup.INSTANCE;
+		return FunctionalGenomicsGroup.INSTANCE;
 	}
 
 	@Override
@@ -58,6 +59,11 @@ public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobM
 	@Override
 	public String getId() {
 		return "com.biobam.b2gapps.psortb.merge.workflow.action";
+	}
+
+	@Override
+	public EnumSet<Feature> executionPermissions() {
+		return EnumSet.noneOf(Feature.class);
 	}
 
 }

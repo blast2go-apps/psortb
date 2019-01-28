@@ -10,19 +10,20 @@ import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
-import com.biobam.blast2go.api.action.internal.menugroups.AnalysisGroup;
+import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGroup;
+import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
 public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public IB2GBaseGroup getActionGroup() {
-		return AnalysisGroup.INSTANCE;
+		return FunctionalGenomicsGroup.INSTANCE;
 	}
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
-		return EnumSet.of(PlaceTag.MENU_ANALYSIS, PlaceTag.WORKFLOW);
+		return EnumSet.of(PlaceTag.TOOLBAR, PlaceTag.WORKFLOW);
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public int getPreferredPositionInMenu() {
-		return 9;
+		return 19;
 	}
 
 	@Override
@@ -58,6 +59,11 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 	@Override
 	public String getId() {
 		return "com.biobam.b2gapps.psortb.action";
+	}
+
+	@Override
+	public EnumSet<Feature> executionPermissions() {
+		return EnumSet.noneOf(Feature.class);
 	}
 
 }
