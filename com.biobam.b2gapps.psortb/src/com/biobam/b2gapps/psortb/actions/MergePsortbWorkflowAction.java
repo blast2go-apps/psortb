@@ -14,7 +14,7 @@ import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGrou
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobMetadata> {
+public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobMetadata> implements IB2GPermissionHandler {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
