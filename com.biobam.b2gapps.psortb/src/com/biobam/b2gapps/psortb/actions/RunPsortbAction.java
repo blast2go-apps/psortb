@@ -14,7 +14,7 @@ import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGrou
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class RunPsortbAction extends B2GAction<PsortbJobMetadata> implements IB2GPermissionHandler {
+public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public IB2GBaseGroup getActionGroup() {
