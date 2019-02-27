@@ -63,7 +63,7 @@ public class MergePsortbWorkflowAction extends B2GAction<MergePsortbWorkflowJobM
 
 	@Override
 	public EnumSet<Feature> executionPermissions() {
-		return EnumSet.noneOf(Feature.class);
+		return EnumSet.of(Feature.FUNCTIONAL_GENOMICS);
 	}
 
 }

@@ -63,7 +63,7 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata>{
 
 	@Override
 	public EnumSet<Feature> executionPermissions() {
-		return EnumSet.noneOf(Feature.class);
+		return EnumSet.of(Feature.FUNCTIONAL_GENOMICS);
 	}
 
 }

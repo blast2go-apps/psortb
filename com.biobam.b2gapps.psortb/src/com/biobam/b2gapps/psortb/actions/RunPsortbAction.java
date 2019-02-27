@@ -28,7 +28,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public String getName() {
-		return "Run PSORTb (Online)";
+		return "Run PSORTb";
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public EnumSet<Feature> executionPermissions() {
-		return EnumSet.noneOf(Feature.class);
+		return EnumSet.of(Feature.FUNCTIONAL_GENOMICS);
 	}
 
 }
