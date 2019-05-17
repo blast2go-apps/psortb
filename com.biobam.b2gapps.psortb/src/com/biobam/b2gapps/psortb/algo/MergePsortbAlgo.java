@@ -67,7 +67,7 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 
 				final String location = psortbEntry.getFinalLocalization();
 				if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
-					log.warn("Unknown location");
+					log.info("Unknown location: " + location);
 					continue;
 				}
 				final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
@@ -93,6 +93,7 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 			}
 
 			addModificationInfo(project);
+//<<<<<<< HEAD
 			setFinishMessage(newAnnots + " annotations added to the project.");
 		} catch (IOException e) {
 			log.error("", e);
@@ -104,6 +105,13 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 					log.error("", e);
 				}
 			}
+//=======
+//			postOutputResults(project);
+//			setFinishMessage(newAnnots + " annotations added to the project.");
+//		} catch (IOException e) {
+//			log.warn("", e);
+//			terminateWithError("Problem while loading project.", e);
+//>>>>>>> origin/master
 		}
 	}
 }

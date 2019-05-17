@@ -2,6 +2,7 @@ package com.biobam.b2gapps.psortb.algo;
 
 import java.util.List;
 
+import com.biobam.b2gapps.psortb.data.PsortbObject;
 import com.biobam.blast2go.api.job.IB2GJobMetadata;
 import com.biobam.blast2go.api.job.InputDefinition;
 import com.biobam.blast2go.api.job.input.ItemsOrderList;
@@ -13,6 +14,7 @@ public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbPara
 
 	public static InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
 	public static InputDefinition<ItemsOrderList> ADDITIONAL_ORDER_LIST = ItemsOrderList.INPUT_DEFINITION_OPTIONAL;
+	public static InputDefinition<PsortbObject> OUTPUT_RESULT = InputDefinition.create(PsortbObject.class, "psortb_result", "PSORTb result");
 
 	@Override
 	public List<InputDefinition<?>> inputs() {
@@ -26,7 +28,7 @@ public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbPara
 
 	@Override
 	public List<InputDefinition<?>> outputs() {
-		return InputDefinition.EMPTY_LIST;
+		return InputDefinition.listOf(OUTPUT_RESULT);
 	}
 
 	@Override

@@ -55,8 +55,7 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable, B2G
 		if (results == null) {
 			throw new NullPointerException("Results can not be null");
 		}
-		this.results = CollectionsService.getInstance()
-		        .newIStore(getId(), PsortbObjectValue.ISTORE_KEY);
+		this.results = CollectionsService.getInstance().newIStore(getId(), PsortbObjectValue.ISTORE_KEY);
 		sequenceOrder = new LinkedHashSet<String>(results.size());
 		for (final Entry<String, PsortbEntry> entry : results.entrySet()) {
 			this.results.insert(entry.getKey(), entry.getValue());
