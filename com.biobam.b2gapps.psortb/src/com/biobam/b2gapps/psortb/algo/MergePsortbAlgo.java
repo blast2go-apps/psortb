@@ -1,5 +1,6 @@
 package com.biobam.b2gapps.psortb.algo;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.biobam.b2gapps.psortb.algo.internal.PsortbResultParser;
 import com.biobam.b2gapps.psortb.data.PsortbEntry;
 import com.biobam.b2gapps.psortb.data.PsortbObject;
+import com.biobam.blast2go.api.datatype.B2GPersistenceManager;
 import com.biobam.blast2go.api.job.B2GJob;
 import com.biobam.blast2go.project.model.interfaces.ILightSequence;
 import com.biobam.blast2go.project.model.interfaces.SeqCondImpl;
@@ -33,61 +35,75 @@ public class MergePsortbAlgo extends B2GJob<MergePsortbParameters> {
 
 	@Override
 	public void run() throws InterruptedException {
-		if (psortbObject == null) {
-			// not initialized by constructor
-			psortbObject = (PsortbObject) getParameters().file.getObjectValue();
-		}
-
-		final IProject project = getInput(MergePsortbJobMetadata.INPUT_PROJECT);
-
-		if (project.getSelectedSequencesCount() == 0) {
-			setFinishMessage("No sequences selected.");
-			return;
-		}
-
-		beginTask(getName(), psortbObject.getResults()
-		        .size());
-
-		int newAnnots = 0;
-		for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
-		        .entryIterator(); iterator.hasNext();) {
-			worked(1);
-			final Entry<String, PsortbEntry> entry = iterator.next();
-			final PsortbEntry psortbEntry = entry.getValue();
-			final String sequenceName = psortbEntry.getSequenceName();
-			if (!project.contains(sequenceName)) {
-				log.warn("Project does not contain the sequence {}", sequenceName);
-				continue;
+		boolean initializedElsewhere = true;
+		try {
+			if (psortbObject == null) {
+				// not initialized by constructor
+				initializedElsewhere = false;
+				psortbObject = (PsortbObject) B2GPersistenceManager.loadAndFetchWithReference(getParameters().file.getValue());
 			}
 
-			final String location = psortbEntry.getFinalLocalization();
-			if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
-				log.warn("Unknown location");
-				continue;
+			final IProject project = getInput(MergePsortbJobMetadata.INPUT_PROJECT);
+
+			if (project.getSelectedSequencesCount() == 0) {
+				setFinishMessage("No sequences selected.");
+				return;
 			}
-			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
-			final ILightSequence sequence = project.findSequence(sequenceName);
-			if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
-				final List<String> currentAnnotation = sequence.getAnnotr()
-				        .getGOs();
-				if (!currentAnnotation.contains(goID)) {
-					currentAnnotation.add(goID);
+
+			beginTask(getName(), psortbObject.getResults()
+			        .size());
+
+			int newAnnots = 0;
+			for (final Iterator<Entry<String, PsortbEntry>> iterator = psortbObject.getResults()
+			        .entryIterator(); iterator.hasNext();) {
+				worked(1);
+				final Entry<String, PsortbEntry> entry = iterator.next();
+				final PsortbEntry psortbEntry = entry.getValue();
+				final String sequenceName = psortbEntry.getSequenceName();
+				if (!project.contains(sequenceName)) {
+					log.warn("Project does not contain the sequence {}", sequenceName);
+					continue;
+				}
+
+				final String location = psortbEntry.getFinalLocalization();
+				if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
+					log.warn("Unknown location");
+					continue;
+				}
+				final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
+				final ILightSequence sequence = project.findSequence(sequenceName);
+				if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
+					final List<String> currentAnnotation = sequence.getAnnotr()
+					        .getGOs();
+					if (!currentAnnotation.contains(goID)) {
+						currentAnnotation.add(goID);
+						postJobMessage(goID + " added to sequence " + sequenceName);
+						newAnnots++;
+					}
+				} else {
+					final AnnotationResult annotationResult = new AnnotationResult();
+					final Vector<String> gos = new Vector<String>();
+					gos.add(goID);
+					annotationResult.put("goacc", gos);
+					sequence.setAnnotr(annotationResult);
 					postJobMessage(goID + " added to sequence " + sequenceName);
 					newAnnots++;
 				}
-			} else {
-				final AnnotationResult annotationResult = new AnnotationResult();
-				final Vector<String> gos = new Vector<String>();
-				gos.add(goID);
-				annotationResult.put("goacc", gos);
-				sequence.setAnnotr(annotationResult);
-				postJobMessage(goID + " added to sequence " + sequenceName);
-				newAnnots++;
+				project.updateSequence(sequence);
 			}
-			project.updateSequence(sequence);
-		}
 
-		addModificationInfo(project);
-		setFinishMessage(newAnnots + " annotations added to the project.");
+			addModificationInfo(project);
+			setFinishMessage(newAnnots + " annotations added to the project.");
+		} catch (IOException e) {
+			log.error("", e);
+		} finally {
+			if (!initializedElsewhere) {
+				try {
+					psortbObject.close();
+				} catch (IOException e) {
+					log.error("", e);
+				}
+			}
+		}
 	}
 }

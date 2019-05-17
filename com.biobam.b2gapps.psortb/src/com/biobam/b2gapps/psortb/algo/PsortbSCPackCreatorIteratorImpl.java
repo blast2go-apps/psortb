@@ -44,7 +44,8 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 
 	private String fastaFilePath;
 
-	public PsortbSCPackCreatorIteratorImpl(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters) {
+	public PsortbSCPackCreatorIteratorImpl(IProject project, ItemsOrderList orderList,
+			IServiceCloudParameters scParameters) {
 		this.project = project;
 		this.orderList = orderList;
 		this.scParameters = scParameters;

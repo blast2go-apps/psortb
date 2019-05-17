@@ -10,6 +10,7 @@ import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
 import com.biobam.blast2go.api.action.icon.IB2GIcon;
+import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
 public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
@@ -59,4 +60,8 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 		return "com.biobam.b2gapps.psortb.action";
 	}
 
+	@Override
+	public EnumSet<Feature> executionPermissions() {
+		return EnumSet.noneOf(Feature.class);
+	}
 }

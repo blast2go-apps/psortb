@@ -13,7 +13,8 @@ Require-Bundle: com.biobam.blast2go.api.action;bundle-version="4.0.0",
  com.biobam.blast2go.api.dataviewer.interfaces;bundle-version="4.0.0",
  lib.b2glibs,
  lib.csv,
- com.biobam.blast2go.basic_utilities;bundle-version="4.0.0"
+ com.biobam.blast2go.basic_utilities;bundle-version="4.0.0",
+ lib.json
 Export-Package: com.biobam.b2gapps.psortb.algo,
  com.biobam.b2gapps.psortb.algo.internal,
  com.biobam.b2gapps.psortb.data,
