@@ -4,12 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.biobam.blast2go.build</groupId>
-    <artifactId>com.biobam.blast2go.product.build</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../com.biobam.blast2go.product.build/</relativePath>
+	<artifactId>com.biobam.blast2go.product.build</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+    <relativePath>../../omicsbox-functional-analysis/releng/com.blast2go.aggregator.modules</relativePath>
   </parent>
   <groupId>com.biobam.blast2go.build</groupId>
   <artifactId>lib.csv</artifactId>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.5.2-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
