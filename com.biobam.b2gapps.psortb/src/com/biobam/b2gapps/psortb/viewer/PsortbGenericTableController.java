@@ -82,7 +82,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(150)
+		        .setPreferredWidth(150)
 		        .setMaxWidth(300)
 		        .build());
 
@@ -95,7 +95,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(120)
-		        .setPrefferedWidth(300)
+		        .setPreferredWidth(300)
 		        .setMaxWidth(400)
 		        .build());
 
@@ -108,7 +108,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //		        .setMaxWidth(70)
 		        .build());
 
@@ -125,7 +125,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(80)
-		        .setPrefferedWidth(80)
+		        .setPreferredWidth(80)
 		        .setMaxWidth(120)
 		        .build());
 
@@ -138,7 +138,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(120)
-		        .setPrefferedWidth(300)
+		        .setPreferredWidth(300)
 		        .setMaxWidth(400)
 		        .setDefaultInvisible()
 		        .build());
@@ -152,7 +152,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
@@ -166,7 +166,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
@@ -180,7 +180,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
@@ -193,7 +193,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
@@ -207,7 +207,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
@@ -221,7 +221,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			        }
 		        })
 		        .setMinWidth(70)
-		        .setPrefferedWidth(70)
+		        .setPreferredWidth(70)
 		        //				.setMaxWidth(70)
 		        .setDefaultInvisible()
 		        .build());
