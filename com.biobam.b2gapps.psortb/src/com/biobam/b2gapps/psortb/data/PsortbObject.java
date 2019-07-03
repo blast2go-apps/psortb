@@ -127,7 +127,6 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable, B2G
 	}
 
 	public void updateEntry(final PsortbEntry entry) {
-		System.out.println(isDirty());
 		if (entry == null) {
 			throw new NullPointerException("Results can not be null");
 		}
