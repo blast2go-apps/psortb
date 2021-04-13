@@ -14,5 +14,5 @@ Require-Bundle: com.biobam.blast2go.api.action;bundle-version="4.1.0",
  lib.b2glibs,
  lib.csv,
  com.biobam.blast2go.basic_utilities;bundle-version="4.0.0",
- lib.json,
+ 
  com.biobam.blast2go;bundle-version="1.4.0"

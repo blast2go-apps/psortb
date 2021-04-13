@@ -5,5 +5,6 @@ Bundle-SymbolicName: lib.csv
 Bundle-Version: 1.2.1.qualifier
 Bundle-ClassPath: commons-csv-1.2.jar
 Export-Package: org.apache.commons.csv;version="1.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: lib.log4j;bundle-version="1.0.1"
+Automatic-Module-Name: lib.csv
