@@ -32,11 +32,6 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 	}
 
 	@Override
-	public IB2GIcon getActionIcon() {
-		return IB2GIcon.DEFAULT_EMPTY_ICON;
-	}
-
-	@Override
 	public int getPreferredPositionInMenu() {
 		return 19;
 	}
