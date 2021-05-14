@@ -117,7 +117,7 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 		RequestPack pack;
 		try {
 			fastaFilePath = file.getAbsolutePath();
-			pack = new RequestPack("psortb", scParameters.toJsonString(), Arrays.asList(fastaFilePath));
+			pack = new RequestPack("psortb", "1", scParameters.toJsonString(), Arrays.asList(fastaFilePath));
 		} catch (final JSONException e1) {
 			log.error("Could not create the parameters", e1);
 			throw new IllegalStateException("Could not create the parameters. Algorithm will stop");

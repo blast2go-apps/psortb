@@ -2,7 +2,7 @@
 <feature
       id="com.biobam.b2gapps.psortb.feature"
       label="PSORTb"
-      version="1.5.3.qualifier"
+      version="1.6.0.qualifier"
       provider-name="BIOBAM"
       plugin="com.biobam.b2gapps.psortb">
 
@@ -33,11 +33,5 @@ http://www.gnu.org/licenses/gpl.txt
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="lib.csv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>
