@@ -1,5 +1,6 @@
 package com.biobam.b2gapps.psortb.algo;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.ClosedByInterruptException;
@@ -11,7 +12,6 @@ import java.util.Iterator;
 
 import org.bioinfo.commons.io.utils.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,17 +24,18 @@ import com.biobam.blast2go.project.model.interfaces.ILightSequence;
 
 import es.blast2go.data.IProject;
 
-final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
-	private static final Logger log = LoggerFactory.getLogger(PsortbSCPackCreatorIteratorImpl.class);
+final class PsortbPackageCreator extends ISCPackCreatorIterator {
+	private static final Logger log = LoggerFactory.getLogger(PsortbPackageCreator.class);
 	// We limit the sum of all amino acids to a bit more than this number.
-	final int LENGTH_LIMIT = 2000;
+	final int LENGTH_LIMIT = 4000;
 	private Iterator<ILightSequence> projectIterator;
-	private int nucleotideSequencesCount = 0;
+	private int nucleotideSequenceCount = 0;
+	private int aminoAcidSequenceCount = 0;
 	private IServiceCloudParameters scParameters;
-	private String fastaFilePath;
 	private IProgressMonitor monitor;
+	private File tempFile;
 
-	public PsortbSCPackCreatorIteratorImpl(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters, IProgressMonitor monitor) {
+	public PsortbPackageCreator(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters, IProgressMonitor monitor) {
 		this.scParameters = scParameters;
 		this.monitor = monitor;
 		projectIterator = project.onlySelectedSequencesIterator(orderList);
@@ -75,55 +76,46 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 	@Override
 	public RequestPack next() {
 		int packageLength = 0;
-		File file;
-
-		// Create the FASTA file to be sent.
 		try {
-			file = File.createTempFile("fasta", ".fasta");
-		} catch (final IOException e) {
-			log.error("Could not create temporary file. Algorithm will stop.", e);
-			throw new IllegalStateException("Could not create temporary file. Algorithm will stop");
-		}
-
-		while (projectIterator.hasNext() && packageLength < LENGTH_LIMIT) {
-			final ILightSequence b2gSequence = projectIterator.next();
-			if (!validSequence(b2gSequence)) {
-				continue;
+			tempFile = File.createTempFile("psortb_", ".fasta");
+			try (BufferedWriter bw = Utilities.bufferedWriter(tempFile.toPath(), false)) {
+				while (projectIterator.hasNext() && packageLength < LENGTH_LIMIT) {
+					ILightSequence sequence = projectIterator.next();
+					if (!validSequence(sequence)) {
+						continue;
+					}
+					String sequenceString = sequence.getSeqString();
+					if (Utilities.isSequenceNucletide(sequenceString)) {
+						nucleotideSequenceCount++;
+					} else {
+						aminoAcidSequenceCount++;
+						bw.write(String.format(">%s\n%s\n", sequence.getName(), sequenceString));
+						packageLength += sequenceString.length();
+					}
+					monitor.worked(1);
+				}
+				scParameters.put(PSParameters.P_FILE_NAME.key(), FileUtils.getFileName(tempFile.getAbsolutePath()));
+				RequestPack pack = new RequestPack("psortb", "1", scParameters.toJsonString(), Arrays.asList(tempFile.getAbsolutePath()));
+				return pack;
 			}
-			final String aminoacidsString = b2gSequence.getSeqString();
-			if (Utilities.isSequenceNucletide(aminoacidsString)) {
-				nucleotideSequencesCount++;
-			} else {
-				addToFastaFile(file, b2gSequence);
-				packageLength += b2gSequence.getSeqLength();
-			}
-			monitor.worked(1);
+		} catch (IOException e) {
+			log.error("", e);
+			return null;
 		}
-
-		// After the file has been created, add the file name to parameters
-		scParameters.put(PSParameters.P_FILE_NAME.key(), FileUtils.getFileName(file.getAbsolutePath()));
-
-		// Finally create the actual Request Pack
-		RequestPack pack;
-		try {
-			fastaFilePath = file.getAbsolutePath();
-			pack = new RequestPack("psortb", "1", scParameters.toJsonString(), Arrays.asList(fastaFilePath));
-		} catch (final JSONException e1) {
-			log.error("Could not create the parameters", e1);
-			throw new IllegalStateException("Could not create the parameters. Algorithm will stop");
-		}
-
-		return pack;
 	}
 
 	@Override
 	public void remove() {
-		if (fastaFilePath != null) {
-			new File(fastaFilePath).delete();
+		if (tempFile != null) {
+			tempFile.delete();
 		}
 	}
 
-	public int getNucleotideSequencesCount() {
-		return nucleotideSequencesCount;
+	public int getNucleotideSequenceCount() {
+		return nucleotideSequenceCount;
+	}
+
+	public int getAminoAcidSequenceCount() {
+		return aminoAcidSequenceCount;
 	}
 }

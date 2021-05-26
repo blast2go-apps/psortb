@@ -15,7 +15,7 @@ public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbPara
 	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
 	public static final InputDefinition<ItemsOrderList> ADDITIONAL_ORDER_LIST = ItemsOrderList.INPUT_DEFINITION_OPTIONAL;
 	public static final InputDefinition<PsortbObject> PSORTB_RESULTS = InputDefinition.create(PsortbObject.class, "psortb_result", "PSORTb result");
-	public static final InputDefinition<WebChart> WEB_CHART = new InputDefinition<>(WebChart.class, "psortb_chart", "Result Summary");
+	public static final InputDefinition<WebChart> CHART = new InputDefinition<>(WebChart.class, "psortb_chart", "Result Summary");
 
 	@Override
 	public List<InputDefinition<?>> inputs() {
@@ -29,7 +29,7 @@ public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbPara
 
 	@Override
 	public List<InputDefinition<?>> outputs() {
-		return InputDefinition.listOf(PSORTB_RESULTS, WEB_CHART);
+		return InputDefinition.listOf(PSORTB_RESULTS, CHART);
 	}
 
 	@Override

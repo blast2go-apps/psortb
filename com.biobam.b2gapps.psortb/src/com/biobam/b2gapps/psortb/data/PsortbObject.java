@@ -33,7 +33,7 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 	/**
 	 * Property name.
 	 */
-	public static final String UPDATE_ENTRY = "updateEntry";
+	public static final String INSERT_ENTRY = "insertEntry";
 
 	PsortbObject(final B2GObjectInfo objectInfo) {
 		super(objectInfo);
@@ -45,7 +45,7 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 			throw new NullPointerException("Results can not be null");
 		}
 		this.results = CollectionsService.getInstance()
-		        .newIStore(getId(), PsortbObjectValue.ISTORE_KEY);
+		        .newStore(getId(), PsortbObjectValue.ISTORE_KEY);
 		sequenceOrder = new LinkedHashSet<String>(results.size());
 		for (final Entry<String, PsortbEntry> entry : results.entrySet()) {
 			this.results.insert(entry.getKey(), entry.getValue());
@@ -69,7 +69,7 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 		}
 		final PsortbObjectValue rfamValue = (PsortbObjectValue) value;
 		results = CollectionsService.getInstance()
-		        .loadIStore(getId(), PsortbObjectValue.ISTORE_KEY);
+		        .loadStore(getId(), PsortbObjectValue.ISTORE_KEY);
 		sequenceOrder = rfamValue.sequenceOrder;
 	}
 
@@ -103,15 +103,16 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 		return results.containsKey(seqName);
 	}
 
-	public void updateEntry(final PsortbEntry entry) {
+	public void add(final PsortbEntry entry) {
 		if (entry == null) {
 			throw new NullPointerException("Results can not be null");
 		}
 		startModification();
 		try {
 			final String sequenceID = entry.getSequenceName();
-			results.insertOrUpdate(sequenceID, entry);
-			notifyGenericListeners(UPDATE_ENTRY, sequenceID, sequenceID);
+			sequenceOrder.add(sequenceID);
+			results.insert(sequenceID, entry);
+			notifyGenericListeners(INSERT_ENTRY, sequenceID, sequenceID);
 			setDirty(true);
 		} finally {
 			endModification();

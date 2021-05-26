@@ -254,8 +254,8 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 			return;
 		}
 		final String eventName = event.getPropertyName();
-		if (eventName.equals(PsortbObject.UPDATE_ENTRY)) {
-			changeCallback.changedEntry((String) event.getOldValue());
+		if (eventName.equals(PsortbObject.INSERT_ENTRY)) {
+			changeCallback.addNewEntry((String) event.getNewValue());
 		}
 	}
 
