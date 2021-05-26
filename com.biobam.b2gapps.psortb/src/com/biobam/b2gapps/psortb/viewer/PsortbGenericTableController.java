@@ -75,7 +75,7 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		        .setPrefferedWidth(300)
 		        .setMaxWidth(400)
 		        .build());
-		
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Final Score")
 		        .setContentCallback(new CallBack<String, Double>() {
 
@@ -86,124 +86,122 @@ public class PsortbGenericTableController implements IB2GTableFormat<PsortbObjec
 		        })
 		        .setMinWidth(70)
 		        .setPrefferedWidth(70)
-//		        .setMaxWidth(70)
+		        //		        .setMaxWidth(70)
 		        .build());
-		
+
 		columns.add(ColumnDataCreator.stringColumnBuilder("GO ID")
 		        .setContentCallback(new CallBack<String, String>() {
 
 			        @Override
 			        public String call(final String id) {
 				        final String location = getEntry(id).getFinalLocalization();
-				        if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
+				        if (!PsortbResultParser.containsLocationName(location)) {
 					        return "-";
 				        }
-				        return PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
+				        return PsortbResultParser.getGoId(location);
 			        }
 		        })
 		        .setMinWidth(80)
 		        .setPrefferedWidth(80)
 		        .setMaxWidth(120)
 		        .build());
-		
-		
+
 		columns.add(ColumnDataCreator.stringColumnBuilder("Secondary Localization")
-				.setContentCallback(new CallBack<String, String>() {
-					
-					@Override
-					public String call(final String id) {
-						return getEntry(id).getSecondaryLocation();
-					}
-				})
-				.setMinWidth(120)
-				.setPrefferedWidth(300)
-				.setMaxWidth(400)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, String>() {
+
+			        @Override
+			        public String call(final String id) {
+				        return getEntry(id).getSecondaryLocation();
+			        }
+		        })
+		        .setMinWidth(120)
+		        .setPrefferedWidth(300)
+		        .setMaxWidth(400)
+		        .setDefaultInvisible()
+		        .build());
 
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Cytoplasmic Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCytoplasmicScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCytoplasmicScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("CytoplasmicMembrane Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCytoplasmicMembraneScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCytoplasmicMembraneScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Cellwall Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getCellwallScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getCellwallScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Extracellular Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getExtracellularScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getExtracellularScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("Periplasmic Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getPeriplasmicScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
-		
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getPeriplasmicScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
+
 		columns.add(ColumnDataCreator.doubleColumnBuilder("OuterMembrane Score")
-				.setContentCallback(new CallBack<String, Double>() {
-					
-					@Override
-					public Double call(final String id) {
-						return getEntry(id).getOuterMembraneScore();
-					}
-				})
-				.setMinWidth(70)
-				.setPrefferedWidth(70)
-//				.setMaxWidth(70)
-				.setDefaultInvisible()
-				.build());
+		        .setContentCallback(new CallBack<String, Double>() {
+
+			        @Override
+			        public Double call(final String id) {
+				        return getEntry(id).getOuterMembraneScore();
+			        }
+		        })
+		        .setMinWidth(70)
+		        .setPrefferedWidth(70)
+		        //				.setMaxWidth(70)
+		        .setDefaultInvisible()
+		        .build());
 
 		columns.add(ColumnDataCreator.tagColumnBuilder()
 		        .setContentCallback(new CallBack<String, List<ITableTag>>() {

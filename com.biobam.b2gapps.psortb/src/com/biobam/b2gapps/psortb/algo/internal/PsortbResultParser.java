@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,45 +20,31 @@ import org.slf4j.LoggerFactory;
 
 import com.biobam.b2gapps.psortb.data.PsortbEntry;
 import com.biobam.b2gapps.psortb.data.PsortbEntry.Builder;
-import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.ITableTag;
-import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TableTag;
-import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TagColor;
 
 public class PsortbResultParser {
-
-	private PsortbResultParser() {
-		super();
-	}
-
 	private static final Logger log = LoggerFactory.getLogger(PsortbResultParser.class);
 
-	public static final Map<String, String> LOCATION_TO_GOID_MAP = Collections.unmodifiableMap(new HashMap<String, String>() {
-		private static final long serialVersionUID = 1L;
+	private static final Map<String, String> LOCATION_TO_GOID_MAP = new HashMap<String, String>();
+	static {
+		LOCATION_TO_GOID_MAP.put("cytoplasmic", "GO:0005737");
+		LOCATION_TO_GOID_MAP.put("cytoplasmicmembrane", "GO:0009276");
+		LOCATION_TO_GOID_MAP.put("periplasmic", "GO:0042597");
+		LOCATION_TO_GOID_MAP.put("outermembrane", "GO:0019867");
+		LOCATION_TO_GOID_MAP.put("extracellularspace", "GO:0005615");
+		LOCATION_TO_GOID_MAP.put("extracellular", "GO:0005576");
+		LOCATION_TO_GOID_MAP.put("cellwall", "GO:0005618");
+	}
 
-		{
-			put("Cytoplasmic", "GO:0005737");
-			put("CytoplasmicMembrane", "GO:0009276");
-			put("Periplasmic", "GO:0042597");
-			put("OuterMembrane", "GO:0019867");
-			put("ExtracellularSpace", "GO:0005615");
-			put("Extracellular", "GO:0005576");
-			put("CellWall", "GO:0005618");
+	public static boolean containsLocationName(String locationName) {
+		if (locationName == null) {
+			return false;
 		}
-	});
+		return LOCATION_TO_GOID_MAP.containsKey(locationName.toLowerCase());
+	}
 
-	public static final Map<String, ITableTag> LOCATION_TO_TAG_MAP = Collections.unmodifiableMap(new HashMap<String, ITableTag>() {
-		private static final long serialVersionUID = 1L;
-
-		{
-			put("Cytoplasmic", TableTag.create("Cytoplasmic", TagColor.ORANGE));
-			put("CytoplasmicMembrane", TableTag.create("CytoplasmicMembrane", TagColor.RED));
-			put("Periplasmic", TableTag.create("Periplasmic", TagColor.GREEN));
-			put("OuterMembrane", TableTag.create("OuterMembrane", TagColor.YELLOW));
-			put("ExtracellularSpace", TableTag.create("ExtracellularSpace", TagColor.PINK));
-			put("Extracellular", TableTag.create("Extracellular", TagColor.BLUE));
-			put("CellWall", TableTag.create("CellWall", TagColor.PURPLE));
-		}
-	});
+	public static String getGoId(String locationName) {
+		return LOCATION_TO_GOID_MAP.get(locationName.toLowerCase());
+	}
 
 	public static Collection<PsortbEntry> parseResult(final Path path, final IProgressMonitor monitor) {
 		final List<PsortbEntry> entries = new ArrayList<PsortbEntry>();
@@ -122,8 +107,6 @@ public class PsortbResultParser {
 		} catch (IOException e) {
 			log.error("", e);
 		}
-		//
 		return entries;
 	}
-
 }

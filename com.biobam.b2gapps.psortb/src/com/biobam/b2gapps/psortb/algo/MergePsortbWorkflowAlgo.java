@@ -49,11 +49,11 @@ public class MergePsortbWorkflowAlgo extends B2GModifyJob<EmptyParameters> {
 			}
 
 			final String location = psortbEntry.getFinalLocalization();
-			if (!PsortbResultParser.LOCATION_TO_GOID_MAP.containsKey(location)) {
+			if (!PsortbResultParser.containsLocationName(location)) {
 				log.info("Unknown location: " + location);
 				continue;
 			}
-			final String goID = PsortbResultParser.LOCATION_TO_GOID_MAP.get(location);
+			final String goID = PsortbResultParser.getGoId(location);
 			final ILightSequence sequence = project.findSequence(sequenceName);
 			if (sequence.hasConditions(SeqCondImpl.COND_HAS_ANNOT_RESULT)) {
 				final List<String> currentAnnotation = sequence.getAnnotr()

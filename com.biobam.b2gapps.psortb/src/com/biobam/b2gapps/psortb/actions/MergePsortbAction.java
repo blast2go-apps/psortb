@@ -14,7 +14,7 @@ import com.biobam.blast2go.api.action.icon.IB2GIcon;
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata>{
+public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {

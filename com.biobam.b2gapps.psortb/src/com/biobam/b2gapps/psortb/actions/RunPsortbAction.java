@@ -9,7 +9,6 @@ import com.biobam.blast2go.api.action.ActionType;
 import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
 import com.biobam.blast2go.api.action.PlaceTag;
-import com.biobam.blast2go.api.action.icon.IB2GIcon;
 import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGroup;
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;

@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.bioinfo.commons.io.utils.FileUtils;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.biobam.b2gapps.psortb.algo.PsortbAlgo.PSParameters;
 import com.biobam.blast2go.api.job.input.ItemsOrderList;
 import com.biobam.blast2go.api.scm.ISCPackCreatorIterator;
 import com.biobam.blast2go.api.scm.IServiceCloudParameters;
@@ -26,28 +26,17 @@ import es.blast2go.data.IProject;
 
 final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 	private static final Logger log = LoggerFactory.getLogger(PsortbSCPackCreatorIteratorImpl.class);
-
-	// PACK CREATOR CONSTANTS
-
 	// We limit the sum of all amino acids to a bit more than this number.
 	final int LENGTH_LIMIT = 2000;
-
-	// INPUT DATA
-	private final IProject project;
-	private final ItemsOrderList orderList;
-
-	// LOCAL VARIABLES
-	Iterator<ILightSequence> projectIterator;
+	private Iterator<ILightSequence> projectIterator;
 	private int nucleotideSequencesCount = 0;
-
 	private IServiceCloudParameters scParameters;
-
 	private String fastaFilePath;
+	private IProgressMonitor monitor;
 
-	public PsortbSCPackCreatorIteratorImpl(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters) {
-		this.project = project;
-		this.orderList = orderList;
+	public PsortbSCPackCreatorIteratorImpl(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters, IProgressMonitor monitor) {
 		this.scParameters = scParameters;
+		this.monitor = monitor;
 		projectIterator = project.onlySelectedSequencesIterator(orderList);
 	}
 
@@ -59,7 +48,7 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 	}
 
 	private void addToFastaFile(final File file, final ILightSequence sequence) {
-		final String string = getPropperFasta(sequence);
+		final String string = getProperFasta(sequence);
 		try {
 			Files.write(file.toPath(), Arrays.asList(string), Charset.forName("UTF-8"), StandardOpenOption.APPEND);
 		} catch (final ClosedByInterruptException closed) {
@@ -71,10 +60,10 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 		}
 	}
 
-	private String getPropperFasta(final ILightSequence sequence) {
+	private String getProperFasta(final ILightSequence sequence) {
 		final StringBuilder fasta = new StringBuilder();
 		fasta.append(">" + sequence.getName() + "\n");
-		fasta.append(sequence.getSeqString() + "\n");
+		fasta.append(sequence.getSeqString());
 		return fasta.toString();
 	}
 
@@ -108,6 +97,7 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 				addToFastaFile(file, b2gSequence);
 				packageLength += b2gSequence.getSeqLength();
 			}
+			monitor.worked(1);
 		}
 
 		// After the file has been created, add the file name to parameters
@@ -128,7 +118,6 @@ final class PsortbSCPackCreatorIteratorImpl extends ISCPackCreatorIterator {
 
 	@Override
 	public void remove() {
-		// Remove the FASTA file.
 		if (fastaFilePath != null) {
 			new File(fastaFilePath).delete();
 		}

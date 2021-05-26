@@ -11,7 +11,6 @@ import es.blast2go.data.IProject;
 import es.blast2go.data.IProjectConstants;
 
 public class MergePsortbWorkflowJobMetadata implements IB2GJobMetadata<MergePsortbWorkflowAlgo, EmptyParameters> {
-
 	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
 	public static final InputDefinition<PsortbObject> INPUT_PSORTB_RESULT = InputDefinition.create(PsortbObject.class, "psortb_result", "PSORTb Result");
 
@@ -39,5 +38,4 @@ public class MergePsortbWorkflowJobMetadata implements IB2GJobMetadata<MergePsor
 	public Class<EmptyParameters> parametersClass() {
 		return EmptyParameters.class;
 	}
-
 }

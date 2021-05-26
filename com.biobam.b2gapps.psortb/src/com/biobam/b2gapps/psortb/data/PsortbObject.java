@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.biobam.blast2go.api.datatype.AbstractB2GObject;
-import com.biobam.blast2go.api.datatype.B2GCollections;
 import com.biobam.blast2go.api.datatype.B2GMergeable;
 import com.biobam.blast2go.api.datatype.B2GObjectInfo;
 import com.biobam.blast2go.api.datatype.B2GObjectValue;
@@ -45,7 +44,8 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 		if (results == null) {
 			throw new NullPointerException("Results can not be null");
 		}
-		this.results = CollectionsService.getInstance().newIStore(getId(), PsortbObjectValue.ISTORE_KEY);
+		this.results = CollectionsService.getInstance()
+		        .newIStore(getId(), PsortbObjectValue.ISTORE_KEY);
 		sequenceOrder = new LinkedHashSet<String>(results.size());
 		for (final Entry<String, PsortbEntry> entry : results.entrySet()) {
 			this.results.insert(entry.getKey(), entry.getValue());
@@ -68,7 +68,8 @@ public class PsortbObject extends AbstractB2GObject implements B2GMergeable {
 			throw new IllegalArgumentException("B2GObjectValue is not a PsortObjectValue");
 		}
 		final PsortbObjectValue rfamValue = (PsortbObjectValue) value;
-		results = CollectionsService.getInstance().loadIStore(getId(), PsortbObjectValue.ISTORE_KEY);
+		results = CollectionsService.getInstance()
+		        .loadIStore(getId(), PsortbObjectValue.ISTORE_KEY);
 		sequenceOrder = rfamValue.sequenceOrder;
 	}
 

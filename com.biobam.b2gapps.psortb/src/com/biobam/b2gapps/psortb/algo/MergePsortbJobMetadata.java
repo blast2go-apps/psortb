@@ -6,9 +6,11 @@ import com.biobam.b2gapps.psortb.data.PsortbObject;
 import com.biobam.blast2go.api.job.IB2GJobMetadata;
 import com.biobam.blast2go.api.job.InputDefinition;
 
-public class MergePsortbJobMetadata implements IB2GJobMetadata<MergePsortbAlgo, MergePsortbParameters> {
+import es.blast2go.data.IProject;
+import es.blast2go.data.IProjectConstants;
 
-	//	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
+public class MergePsortbJobMetadata implements IB2GJobMetadata<MergePsortbAlgo, MergePsortbParameters> {
+	public static final InputDefinition<IProject> PROJECT = IProjectConstants.INPUT_DEFINITION;
 	public static final InputDefinition<PsortbObject> INPUT_PSORTB_RESULT = InputDefinition.create(PsortbObject.class, "PSORTb Result", "PSORTb Result");
 
 	@Override
@@ -23,7 +25,7 @@ public class MergePsortbJobMetadata implements IB2GJobMetadata<MergePsortbAlgo, 
 
 	@Override
 	public List<InputDefinition<?>> outputs() {
-		return InputDefinition.EMPTY_LIST;
+		return InputDefinition.listOf(PROJECT);
 	}
 
 	@Override
@@ -35,5 +37,4 @@ public class MergePsortbJobMetadata implements IB2GJobMetadata<MergePsortbAlgo, 
 	public Class<MergePsortbParameters> parametersClass() {
 		return MergePsortbParameters.class;
 	}
-
 }

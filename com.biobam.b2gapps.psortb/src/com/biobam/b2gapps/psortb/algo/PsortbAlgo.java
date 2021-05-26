@@ -3,6 +3,7 @@ package com.biobam.b2gapps.psortb.algo;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,56 +21,38 @@ import com.biobam.blast2go.api.scm.IServiceCloud;
 import com.biobam.blast2go.api.scm.IServiceCloudParameters;
 import com.biobam.blast2go.project.model.interfaces.ILightSequence;
 import com.biobam.blast2go.project.model.interfaces.SeqCondImpl;
+import com.biobam.omicsbox.webcharts.WebChart;
+import com.biobam.omicsbox.webcharts.WebChartGenerator;
+import com.biobam.omicsbox.webcharts.WebChartUtils.AXIS_TYPE;
+import com.biobam.omicsbox.webcharts.WebChartUtils.SIDEBAR_MODULES;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 import es.blast2go.data.IProject;
 
-
 public class PsortbAlgo extends B2GJob<PsortbParameters> {
 	private static final Logger log = LoggerFactory.getLogger(PsortbAlgo.class);
+	private PsortbSCPackCreatorIteratorImpl packCreatorIterator;
+	private final Multiset<String> locations = HashMultiset.create();
 
 	public PsortbAlgo() {
 		super("PSORTb", new PsortbParameters());
 	}
 
-	enum PSParameters {
-		P_ORGANISM("organism"),
-		P_GRAM("gram"),
-		P_ADVANCED_GRAM("advancedgram"),
-		P_CUTOFF("cutoff"),
-		P_FILE_NAME("filename");
-		private String key;
-
-		private PSParameters(final String key) {
-			this.key = key;
-		}
-
-		public String key() {
-			return key;
-		}
-	}
-
-	private int unknownCount = 0;
-	private PsortbSCPackCreatorIteratorImpl packCreatorIterator;
-
 	@Override
 	public void run() throws InterruptedException {
-
-		// Get Project and Order list.
 		final IProject project = getInput(PsortbJobMetadata.INPUT_PROJECT);
 		final ItemsOrderList orderList = getInput(PsortbJobMetadata.ADDITIONAL_ORDER_LIST);
 		final PsortbParameters parameters = getParameters();
 
-		// Check project preconditions.
 		if (project.getSelectedSequencesCount() == 0) {
-			setFinishMessage("No sequences selected.");
-			return;
+			terminateWithError("No sequences selected.");
 		}
 		if (!project.atLeastOneSequenceComplies(SeqCondImpl.COND_HAS_SEQ_STRING)) {
-			setFinishMessage("There are no sequences with sequence information, please load the original fasta-file and try again.");
-			return;
+			terminateWithError("There are no sequences with sequence information, please load the original fasta-file and try again.");
 		}
 
-		beginTask(getName(), project.getSelectedSequencesCount());
+		beginTask(getName(), project.getSelectedSequencesCount() * 2);
 
 		// Create the output PsortB adding empty entries.
 		final Map<String, PsortbEntry> parseResult = new LinkedHashMap<String, PsortbEntry>();
@@ -83,7 +66,7 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 		addModificationInfo(resultObject);
 
 		// Post the output object. Entries will be updated with results during the execution.
-		postOutputResults(resultObject);
+		postOutput(PsortbJobMetadata.PSORTB_RESULTS, resultObject);
 
 		try {
 			// Create a cloud instance.
@@ -95,15 +78,12 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 
 				@Override
 				public void handleResult(final FileSystem fs) {
-					final Path path = fs.getPath("output.txt");
-					final Collection<PsortbEntry> entries = PsortbResultParser.parseResult(path, getIProgressMonitor());
-					for (final PsortbEntry entry : entries) {
+					Path path = fs.getPath("output.txt");
+					Collection<PsortbEntry> entries = PsortbResultParser.parseResult(path, getIProgressMonitor());
+					for (PsortbEntry entry : entries) {
 						resultObject.updateEntry(entry);
-
 						String finalLocalization = entry.getFinalLocalization();
-						if ("Unknown".equals(finalLocalization)) {
-							unknownCount++;
-						}
+						locations.add(finalLocalization);
 					}
 					count += entries.size();
 					postJobMessage(count + "/" + project.getSelectedSequencesCount() + " sequence results obtained...");
@@ -121,34 +101,47 @@ public class PsortbAlgo extends B2GJob<PsortbParameters> {
 			scParameters.put(PSParameters.P_CUTOFF.key(), String.valueOf(parameters.cutoff.getValue() / 10));
 
 			// Define how the packs to be sent are created by creating and setting an implementation of the PackCreatorIterator.
-			packCreatorIterator = new PsortbSCPackCreatorIteratorImpl(project, orderList, scParameters);
+			packCreatorIterator = new PsortbSCPackCreatorIteratorImpl(project, orderList, scParameters, getIProgressMonitor());
 			service.setPackCreatorIterator(packCreatorIterator);
 
 			// Start sending. This will internally send packages available in the pack creator iterator and send them to be handled by the result handler.
 			service.startSending();
 
+			Map<String, Integer> data = new HashMap<>();
+			for (String location : locations.elementSet()) {
+				data.put(location, locations.count(location));
+			}
+			WebChart webChart = WebChartGenerator.create(data)
+			        .createPieChart()
+			        .autoCategoryColors()
+			        .setChartTitle("Predicted Locations")
+			        .setAxisLabels("Location", "Count")
+			        .setXAxisSplitLine(true)
+			        .enableSorting(true)
+			        .setAxisTypes(AXIS_TYPE.CATEGORY, AXIS_TYPE.NUMERIC)
+			        .addSidebarModules(SIDEBAR_MODULES.DEFAULT_FORMATTING, SIDEBAR_MODULES.SORTING_OPTIONS, SIDEBAR_MODULES.PLOT_EDITOR_BARS, SIDEBAR_MODULES.PLOT_EDITOR_PIE)
+			        .build();
+			postOutput(PsortbJobMetadata.WEB_CHART, webChart);
+
 		} finally {
-
-			// Set the finish message (including process statistics).
-
 			StringBuilder sb = new StringBuilder();
-
 			if (isCanceled()) {
 				sb.append("Algorithm execution cancelled.");
 			} else {
 				sb.append("PSORTb finished.");
 			}
-
 			if (packCreatorIterator == null || packCreatorIterator.getNucleotideSequencesCount() == 0) {
 				sb.append("\nYou can merge the new GOs with the original project annotation.");
 			} else {
+				if (packCreatorIterator.getNucleotideSequencesCount() == project.size()) {
+					setFinishStatus(ERROR_STATUS);
+				} else {
+					setFinishStatus(WARNING_STATUS);
+				}
 				sb.append("\nPsortB can only process protein sequences.\n");
 				sb.append(packCreatorIterator.getNucleotideSequencesCount() + " nucleotide sequences were skipped.");
 			}
-
-			sb.append("\nSequences with unknown location: " + unknownCount);
+			sb.append("\nSequences with unknown location: " + locations.count("Unknown"));
 		}
-
 	}
-
 }

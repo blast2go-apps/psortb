@@ -22,9 +22,7 @@ public class PsortbParameters extends Parameters {
 	}
 
 	public NoteKey note = NoteKey.builder(getBaseName(".note"))
-	        .setDescription("PSORTb is a subcellular localization prediction tool for bacterial protein sequences.\n" +
-	        		"<b>Note:<b>" +
-	        		"If your project contains nucleotide sequences the \"Translate Longest ORF\" function can be used to convert your sequences into proteins.")
+	        .setDescription("PSORTb is a subcellular localization prediction tool for bacterial protein sequences.\n" + "<b>Note:<b>" + "If your project contains nucleotide sequences the \"Translate Longest ORF\" function can be used to convert your sequences into proteins.")
 	        .build();
 
 	public ListKey<ORGANISM> organism = ListKey.builder(getBaseName(".organism"), ORGANISM.class, ORGANISM.values(), ORGANISM.BACTERIA)
