@@ -1,4 +1,4 @@
-package com.biobam.b2gapps.psortb.algo;
+package com.biobam.b2gapps.psortb.merge;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.biobam.blast2go.api.job.parameters.EmptyParameters;
 import es.blast2go.data.IProject;
 import es.blast2go.data.IProjectConstants;
 
-public class MergePsortbWorkflowJobMetadata implements IB2GJobMetadata<MergePsortbWorkflowAlgo, EmptyParameters> {
+public class MergePsortbWorkflowMetadata implements IB2GJobMetadata<MergePsortbWorkflowJob, EmptyParameters> {
 	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
 	public static final InputDefinition<PsortbObject> INPUT_PSORTB_RESULT = InputDefinition.create(PsortbObject.class, "psortb_result", "PSORTb Result");
 
@@ -30,8 +30,8 @@ public class MergePsortbWorkflowJobMetadata implements IB2GJobMetadata<MergePsor
 	}
 
 	@Override
-	public Class<MergePsortbWorkflowAlgo> jobClass() {
-		return MergePsortbWorkflowAlgo.class;
+	public Class<MergePsortbWorkflowJob> jobClass() {
+		return MergePsortbWorkflowJob.class;
 	}
 
 	@Override

@@ -5,25 +5,33 @@ import com.biobam.b2gapps.psortb.algo.PsortbParametersHelper.GRAM;
 import com.biobam.b2gapps.psortb.algo.PsortbParametersHelper.ORGANISM;
 import com.biobam.blast2go.api.job.parameters.Parameters;
 import com.biobam.blast2go.api.job.parameters.key.DoubleKey;
+import com.biobam.blast2go.api.job.parameters.key.FileKey;
 import com.biobam.blast2go.api.job.parameters.key.ListKey;
 import com.biobam.blast2go.api.job.parameters.key.NoteKey;
 import com.biobam.blast2go.api.job.parameters.key.validator.DoubleValidator;
+import com.biobam.blast2go.api.job.parameters.key.validator.PathValidator;
 import com.biobam.blast2go.api.job.parameters.keys.internal.ParameterKey;
 
 public class PsortbParameters extends Parameters {
 
 	public PsortbParameters() {
 		add(note);
+		add(inputFasta);
 		add(organism);
 		add(gram);
 		add(advancedGram);
 		add(cutoff);
-		// add(outputFormat);
 	}
 
 	public NoteKey note = NoteKey.builder(getBaseName(".note"))
 	        .setDescription("PSORTb is a subcellular localization prediction tool for bacterial protein sequences.\n" + "<b>Note:<b>" + "If your project contains nucleotide sequences the \"Translate Longest ORF\" function can be used to convert your sequences into proteins.")
 	        .build();
+	
+	public FileKey inputFasta = FileKey.builder(getBaseName("inputFasta"))
+	        .setName("Query Proteins")
+	        .setDescription("Input protein query sequences.")
+	        .setValidator(PathValidator.existingFileNoSpaces())
+	        .buildInput();
 
 	public ListKey<ORGANISM> organism = ListKey.builder(getBaseName(".organism"), ORGANISM.class, ORGANISM.values(), ORGANISM.BACTERIA)
 	        .setName("Organism Type")

@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.biobam.b2gapps.psortb.algo.internal.PsortbResultParser;
+import com.biobam.b2gapps.psortb.algo.PsortbResultParser;
 import com.biobam.b2gapps.psortb.data.PsortbEntry;
 import com.biobam.b2gapps.psortb.data.PsortbObject;
 import com.biobam.blast2go.api.core.utils.callback.CallBack;
@@ -21,12 +21,12 @@ import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.ITableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TableTag;
 import com.biobam.blast2go.api.dataviewer.interfaces.tableformat.TagColor;
 
-public class PsortbGenericTableController implements IB2GTableFormat<PsortbObject, PsortbEntry>, PropertyChangeListener {
+public class PsortbViewer implements IB2GTableFormat<PsortbObject, PsortbEntry>, PropertyChangeListener {
 
 	private PsortbObject object;
 	private ITableModelChangedCallback changeCallback;
 
-	public PsortbGenericTableController(final PsortbObject object) {
+	public PsortbViewer(final PsortbObject object) {
 		this.object = object;
 		this.object.addChangeListener(this);
 	}

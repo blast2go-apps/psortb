@@ -5,26 +5,20 @@ import java.util.List;
 import com.biobam.b2gapps.psortb.data.PsortbObject;
 import com.biobam.blast2go.api.job.IB2GJobMetadata;
 import com.biobam.blast2go.api.job.InputDefinition;
-import com.biobam.blast2go.api.job.input.ItemsOrderList;
 import com.biobam.omicsbox.webcharts.WebChart;
 
-import es.blast2go.data.IProject;
-import es.blast2go.data.IProjectConstants;
-
-public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbParameters> {
-	public static final InputDefinition<IProject> INPUT_PROJECT = IProjectConstants.INPUT_DEFINITION;
-	public static final InputDefinition<ItemsOrderList> ADDITIONAL_ORDER_LIST = ItemsOrderList.INPUT_DEFINITION_OPTIONAL;
+public class PsortbMetadata implements IB2GJobMetadata<PsortbJob, PsortbParameters> {
 	public static final InputDefinition<PsortbObject> PSORTB_RESULTS = InputDefinition.create(PsortbObject.class, "psortb_result", "PSORTb result");
 	public static final InputDefinition<WebChart> CHART = new InputDefinition<>(WebChart.class, "psortb_chart", "Result Summary");
 
 	@Override
 	public List<InputDefinition<?>> inputs() {
-		return InputDefinition.listOf(INPUT_PROJECT);
+		return InputDefinition.EMPTY_LIST;
 	}
 
 	@Override
 	public List<InputDefinition<?>> additionalRequirements() {
-		return InputDefinition.listOf(ADDITIONAL_ORDER_LIST);
+		return InputDefinition.EMPTY_LIST;
 	}
 
 	@Override
@@ -33,13 +27,12 @@ public class PsortbJobMetadata implements IB2GJobMetadata<PsortbAlgo, PsortbPara
 	}
 
 	@Override
-	public Class<PsortbAlgo> jobClass() {
-		return PsortbAlgo.class;
+	public Class<PsortbJob> jobClass() {
+		return PsortbJob.class;
 	}
 
 	@Override
 	public Class<PsortbParameters> parametersClass() {
 		return PsortbParameters.class;
 	}
-
 }

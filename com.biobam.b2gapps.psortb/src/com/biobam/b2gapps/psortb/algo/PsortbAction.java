@@ -1,10 +1,8 @@
-package com.biobam.b2gapps.psortb.actions;
+package com.biobam.b2gapps.psortb.algo;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.biobam.b2gapps.psortb.algo.PsortbJobMetadata;
-import com.biobam.b2gapps.psortb.wizards.PsortbWizard;
 import com.biobam.blast2go.api.action.ActionType;
 import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
@@ -13,8 +11,7 @@ import com.biobam.blast2go.api.action.internal.menugroups.FunctionalGenomicsGrou
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
-
+public class PsortbAction extends B2GAction<PsortbMetadata> {
 	@Override
 	public IB2GBaseGroup getActionGroup() {
 		return FunctionalGenomicsGroup.INSTANCE;
@@ -27,7 +24,7 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 
 	@Override
 	public String getName() {
-		return "Run PSORTb";
+		return "Run Psortb";
 	}
 
 	@Override
@@ -41,8 +38,8 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 	}
 
 	@Override
-	public Class<PsortbJobMetadata> jobMetadataClass() {
-		return PsortbJobMetadata.class;
+	public Class<PsortbMetadata> jobMetadataClass() {
+		return PsortbMetadata.class;
 	}
 
 	@Override
@@ -59,5 +56,4 @@ public class RunPsortbAction extends B2GAction<PsortbJobMetadata> {
 	public EnumSet<Feature> executionPermissions() {
 		return EnumSet.of(Feature.FUNCTIONAL_GENOMICS);
 	}
-
 }

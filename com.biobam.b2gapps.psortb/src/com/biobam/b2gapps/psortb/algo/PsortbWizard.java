@@ -1,15 +1,15 @@
-package com.biobam.b2gapps.psortb.wizards;
+package com.biobam.b2gapps.psortb.algo;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.biobam.b2gapps.psortb.algo.PsortbParameters;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 import com.biobam.blast2go.api.wizard.page.B2GWizardPage;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.ComboWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.DoubleWidget;
+import com.biobam.blast2go.api.wizard.page.widget.implementations.FileWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.IComboWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.NoteWidget;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.SpaceWidget;
@@ -17,18 +17,21 @@ import com.biobam.blast2go.api.wizard.page.widget.implementations.SpaceWidget;
 public class PsortbWizard extends B2GWizard<PsortbParameters> {
 
 	public PsortbWizard() {
-		setWindowTitle("Run PSORTb");
+		setWindowTitle("Run Psortb");
 	}
 
 	@Override
 	protected void definePages() {
-		addPage(new B2GWizardPage("PSORTb Configuration") {
+		addPage(new B2GWizardPage("Psortb Configuration") {
 
 			@Override
 			public void definePage(final Composite parent) {
 				final PsortbParameters parameters = getParameters();
 
 				addWidget(NoteWidget.create(parent, parameters.note));
+				addWidget(SpaceWidget.create(parent));
+				addWidget(FileWidget.createFileOpenBuilder(parent, parameters.inputFasta)
+				        .build());
 				addWidget(SpaceWidget.create(parent));
 				addWidget(ComboWidget.createSimple(parent, parameters.organism));
 				final IComboWidget gramWidget = addWidget(ComboWidget.createSimple(parent, parameters.gram));
@@ -72,7 +75,5 @@ public class PsortbWizard extends B2GWizard<PsortbParameters> {
 				advancedGramWidget.setEnabled(parameters.isEnabled(parameters.advancedGram));
 			}
 		});
-
 	}
-
 }

@@ -19,4 +19,5 @@ Require-Bundle: com.biobam.blast2go.api.action;bundle-version="4.1.0",
  lib.json,
  lib.guava,
  com.biobam.omicsbox.webcharts,
- com.biobam.blast2go.api.datatype.basics.core;bundle-version="1.0.2"
+ com.biobam.blast2go.api.datatype.basics.core;bundle-version="1.0.2",
+ lib.apache_commons_io_2_5;bundle-version="1.0.1"

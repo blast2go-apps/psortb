@@ -1,8 +1,7 @@
-package com.biobam.b2gapps.psortb.wizards;
+package com.biobam.b2gapps.psortb.merge;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.biobam.b2gapps.psortb.algo.MergePsortbParameters;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 import com.biobam.blast2go.api.wizard.page.B2GWizardPage;
 import com.biobam.blast2go.api.wizard.page.widget.implementations.FileWidget;

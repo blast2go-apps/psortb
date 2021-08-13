@@ -3,74 +3,38 @@ package com.biobam.b2gapps.psortb.algo;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.channels.ClosedByInterruptException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
-import java.util.Iterator;
 
+import org.apache.commons.io.LineIterator;
 import org.bioinfo.commons.io.utils.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.biobam.blast2go.api.job.input.ItemsOrderList;
 import com.biobam.blast2go.api.scm.ISCPackCreatorIterator;
 import com.biobam.blast2go.api.scm.IServiceCloudParameters;
 import com.biobam.blast2go.api.scm.RequestPack;
 import com.biobam.blast2go.basic_utilities.Utilities;
-import com.biobam.blast2go.project.model.interfaces.ILightSequence;
-
-import es.blast2go.data.IProject;
 
 final class PsortbPackageCreator extends ISCPackCreatorIterator {
 	private static final Logger log = LoggerFactory.getLogger(PsortbPackageCreator.class);
-	// We limit the sum of all amino acids to a bit more than this number.
+	// We limit the sum of all amino acids to this number and surplus
 	final int LENGTH_LIMIT = 4000;
-	private Iterator<ILightSequence> projectIterator;
-	private int nucleotideSequenceCount = 0;
-	private int aminoAcidSequenceCount = 0;
-	private IServiceCloudParameters scParameters;
-	private IProgressMonitor monitor;
+	private final IServiceCloudParameters scParameters;
+	private final IProgressMonitor monitor;
+	private final LineIterator iterator;
 	private File tempFile;
+	private String name = "";
 
-	public PsortbPackageCreator(IProject project, ItemsOrderList orderList, IServiceCloudParameters scParameters, IProgressMonitor monitor) {
+	public PsortbPackageCreator(LineIterator iterator, IServiceCloudParameters scParameters, IProgressMonitor monitor) {
+		this.iterator = iterator;
 		this.scParameters = scParameters;
 		this.monitor = monitor;
-		projectIterator = project.onlySelectedSequencesIterator(orderList);
-	}
-
-	private boolean validSequence(final ILightSequence sequence) {
-		if (sequence.getSeqLength() <= 0) {
-			return false;
-		}
-		return true;
-	}
-
-	private void addToFastaFile(final File file, final ILightSequence sequence) {
-		final String string = getProperFasta(sequence);
-		try {
-			Files.write(file.toPath(), Arrays.asList(string), Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-		} catch (final ClosedByInterruptException closed) {
-			log.warn("Interrupted while writing into temporary file. Probably stopped Job.");
-			throw new RuntimeException(closed);
-		} catch (final IOException e) {
-			log.error("Could not write into temporary file. Algorithm will stop.", e);
-			throw new IllegalStateException("Could not write into temporary file. Algorithm will stop");
-		}
-	}
-
-	private String getProperFasta(final ILightSequence sequence) {
-		final StringBuilder fasta = new StringBuilder();
-		fasta.append(">" + sequence.getName() + "\n");
-		fasta.append(sequence.getSeqString());
-		return fasta.toString();
 	}
 
 	@Override
 	public boolean hasNext() {
-		return projectIterator.hasNext();
+		return iterator.hasNext();
 	}
 
 	@Override
@@ -79,25 +43,34 @@ final class PsortbPackageCreator extends ISCPackCreatorIterator {
 		try {
 			tempFile = File.createTempFile("psortb_", ".fasta");
 			try (BufferedWriter bw = Utilities.bufferedWriter(tempFile.toPath(), false)) {
-				while (projectIterator.hasNext() && packageLength < LENGTH_LIMIT) {
-					ILightSequence sequence = projectIterator.next();
-					if (!validSequence(sequence)) {
-						continue;
+				while (iterator.hasNext()) {
+					String line = iterator.next();
+					int indexOf = line.indexOf(' ');
+					if (indexOf > 1) {
+						line = line.substring(0, indexOf);
 					}
-					String sequenceString = sequence.getSeqString();
-					if (Utilities.isSequenceNucletide(sequenceString)) {
-						nucleotideSequenceCount++;
+					if (line.charAt(0) == '>') {
+						if (packageLength > LENGTH_LIMIT) {
+							name = line;
+							break;
+						}
+						bw.write(line);
+						bw.write("\n");
 					} else {
-						aminoAcidSequenceCount++;
-						bw.write(String.format(">%s\n%s\n", sequence.getName(), sequenceString));
-						packageLength += sequenceString.length();
+						if (!name.isBlank()) {
+							bw.write(name);
+							bw.write("\n");
+							name = "";
+						}
+						bw.write(line);
+						bw.write("\n");
+						packageLength += line.length();
 					}
 					monitor.worked(1);
 				}
-				scParameters.put(PSParameters.P_FILE_NAME.key(), FileUtils.getFileName(tempFile.getAbsolutePath()));
-				RequestPack pack = new RequestPack("psortb", "1", scParameters.toJsonString(), Arrays.asList(tempFile.getAbsolutePath()));
-				return pack;
 			}
+			scParameters.put(PSParameters.P_FILE_NAME.key(), FileUtils.getFileName(tempFile.getAbsolutePath()));
+			return new RequestPack("psortb", "1", scParameters.toJsonString(), Arrays.asList(tempFile.getAbsolutePath()));
 		} catch (IOException e) {
 			log.error("", e);
 			return null;
@@ -109,13 +82,5 @@ final class PsortbPackageCreator extends ISCPackCreatorIterator {
 		if (tempFile != null) {
 			tempFile.delete();
 		}
-	}
-
-	public int getNucleotideSequenceCount() {
-		return nucleotideSequenceCount;
-	}
-
-	public int getAminoAcidSequenceCount() {
-		return aminoAcidSequenceCount;
 	}
 }

@@ -7,11 +7,11 @@ import com.biobam.blast2go.api.dataviewer.interfaces.IB2GObjectController;
 import com.biobam.blast2go.api.dataviewer.interfaces.IB2GObjectControllerCreator;
 import com.biobam.blast2go.api.dataviewer.interfaces.WorkbenchProperty;
 
-public class PsortbGenericTableControllerCreator implements IB2GObjectControllerCreator<PsortbObject> {
+public class PsortbViewerCreator implements IB2GObjectControllerCreator<PsortbObject> {
 
 	@Override
 	public Class<? extends IB2GObjectController<PsortbObject>> getObjectControllerClass() {
-		return PsortbGenericTableController.class;
+		return PsortbViewer.class;
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class PsortbGenericTableControllerCreator implements IB2GObjectController
 
 	@Override
 	public IB2GObjectController<PsortbObject> getControllerInstance(PsortbObject object) {
-		return new PsortbGenericTableController(object);
+		return new PsortbViewer(object);
 	}
 
 	@Override

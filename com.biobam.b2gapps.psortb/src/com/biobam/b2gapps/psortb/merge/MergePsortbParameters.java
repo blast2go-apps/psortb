@@ -1,4 +1,4 @@
-package com.biobam.b2gapps.psortb.algo;
+package com.biobam.b2gapps.psortb.merge;
 
 import com.biobam.blast2go.api.job.parameters.Parameters;
 import com.biobam.blast2go.api.job.parameters.key.FileObjectKey;

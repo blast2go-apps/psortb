@@ -4,13 +4,13 @@
    <extension
          point="com.biobam.blast2go.action.extension">
       <client
-            class="com.biobam.b2gapps.psortb.actions.RunPsortbAction">
+            class="com.biobam.b2gapps.psortb.algo.PsortbAction">
       </client>
       <client
-            class="com.biobam.b2gapps.psortb.actions.MergePsortbAction">
+            class="com.biobam.b2gapps.psortb.merge.MergePsortbAction">
       </client>
       <client
-            class="com.biobam.b2gapps.psortb.actions.MergePsortbWorkflowAction">
+            class="com.biobam.b2gapps.psortb.merge.MergePsortbWorkflowAction">
       </client>
    </extension>
    <extension
@@ -22,7 +22,7 @@
    <extension
          point="com.biobam.blast2go.api.dataviewer.interfaces.controller">
       <client
-            class="com.biobam.b2gapps.psortb.viewer.PsortbGenericTableControllerCreator">
+            class="com.biobam.b2gapps.psortb.viewer.PsortbViewerCreator">
       </client>
    </extension>
 

@@ -1,10 +1,8 @@
-package com.biobam.b2gapps.psortb.actions;
+package com.biobam.b2gapps.psortb.merge;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.biobam.b2gapps.psortb.algo.MergePsortbJobMetadata;
-import com.biobam.b2gapps.psortb.wizards.MergePsortbWizard;
 import com.biobam.blast2go.api.action.ActionType;
 import com.biobam.blast2go.api.action.B2GAction;
 import com.biobam.blast2go.api.action.IB2GBaseGroup;
@@ -14,7 +12,7 @@ import com.biobam.blast2go.api.action.icon.IB2GIcon;
 import com.biobam.blast2go.api.user.Feature;
 import com.biobam.blast2go.api.wizard.B2GWizard;
 
-public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
+public class MergePsortbAction extends B2GAction<MergePsortbMetadata> {
 
 	@Override
 	public Set<PlaceTag> getPlaceTags() {
@@ -47,8 +45,8 @@ public class MergePsortbAction extends B2GAction<MergePsortbJobMetadata> {
 	}
 
 	@Override
-	public Class<MergePsortbJobMetadata> jobMetadataClass() {
-		return MergePsortbJobMetadata.class;
+	public Class<MergePsortbMetadata> jobMetadataClass() {
+		return MergePsortbMetadata.class;
 	}
 
 	@Override
